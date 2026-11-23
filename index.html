@@ -143,6 +143,9 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
 
 @media (max-width:720px){
   canvas{height:90vh; min-height:780px}
+  .leyenda{display:none}
+  .foco-grid{grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:80%; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:6px}
+  .tarjeta{scroll-snap-align:start}
   .avance-grid{grid-template-columns:1fr}
   .cifras{grid-template-columns:repeat(3,minmax(0,1fr))}
   .cifra{padding:10px}
@@ -280,8 +283,8 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     if (vertical){
       centros = hayTrab
         ? { prog:[W/2,H*0.17], nucleo:[W/2,H*0.40], crea:[W/2,H*0.64], trab:[W/2,H*0.91] }
-        : { prog:[W/2,H*0.21], nucleo:[W/2,H*0.50], crea:[W/2,H*0.79] };
-      rx = Math.min(W*0.38, 210); ry = hayTrab ? Math.min(H*0.13, 150) : Math.min(H*0.17, 170);
+        : { prog:[W/2,H*0.21], nucleo:[W/2,H*0.49], crea:[W/2,H*0.76] };
+      rx = Math.min(W*0.34, 210); ry = hayTrab ? Math.min(H*0.13, 150) : Math.min(H*0.15, 170);
     } else {
       centros = hayTrab
         ? { prog:[W*0.25,H*0.46], nucleo:[W/2,H*0.38], crea:[W*0.75,H*0.46], trab:[W/2,H*0.83] }
