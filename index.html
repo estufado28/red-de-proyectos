@@ -1,19 +1,20 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" href="logo.png"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
 <title>Red de Proyectos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600;700&family=VT323&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600&family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600;700&family=VT323&display=swap">
 <style>
 /* Layout: cabecera pixel con progreso · Hoy / Esperando / Ideas · En qué estoy · lienzo de la red (sol synthwave pixelado)
    · grupos · avance semanal · historial. Panel del nodo: lateral en PC, hoja inferior en celu.
    Dirección: Hotline Miami — noche violeta, rosa chicle, cian y amarillo neón, letras pixel, sombras duras, CRT. */
 :root{
-  --bg:#0d0221; --surface:#1a0838; --surface2:#26104d; --fg:#fff0fb; --muted:#bfa3e0; --line:#4a2a85;
+  --bg:#0d0221; --surface:#1a0838; --surface2:#26104d; --fg:#fff0fb; --muted:#d4c0f2; --line:#4a2a85;
   --prog:#00f0ff; --crea:#ff2a6d; --trab:#b967ff; --nucleo:#ffe14d; --ok:#5dffb0; --danger:#ff5b5b;
   --sombra:#ff2a6d; --grid:#ff2a6d;
   --cielo:#2a0a4a; --horizonte:#8e1b6c; --sol1:#ffe66d; --sol2:#ff9e3d; --sol3:#ff2a6d; --suelo:#12042a; --palma:#06010e;
   --crt:.16;
   --f-display:"Press Start 2P", "Courier New", monospace;
-  --f-body:"Pixelify Sans", "Trebuchet MS", system-ui, sans-serif;
+  --f-body:"Chakra Petch", "Trebuchet MS", system-ui, sans-serif;
+  --f-pixel:"Pixelify Sans", "Trebuchet MS", system-ui, sans-serif;
   --f-mono:"VT323", "Courier New", ui-monospace, monospace;
   color-scheme:dark;
 }
@@ -26,7 +27,7 @@
   color-scheme:light;
 }
 :root[data-modo="galaxia"]{
-  --bg:#06040f; --surface:#141026; --surface2:#1d1735; --fg:#efe9ff; --muted:#a79ed0; --line:#352b5e;
+  --bg:#06040f; --surface:#141026; --surface2:#1d1735; --fg:#efe9ff; --muted:#c2b9e6; --line:#352b5e;
   --prog:#93b9ff; --crea:#ffb08a; --trab:#d3c2ff; --nucleo:#fff1a8; --ok:#9be8c0; --danger:#ff8a8a;
   --sombra:#93b9ff; --grid:#93b9ff;
   --cielo:#06040f; --horizonte:#06040f; --sol1:#fff1a8; --sol2:#ffb08a; --sol3:#93b9ff; --suelo:#06040f; --palma:#06040f;
@@ -57,7 +58,7 @@ input[type=text], input:not([type]), textarea{background:var(--surface2); border
 input:focus, textarea:focus{border-color:var(--prog); outline:none}
 
 /* barra por bloques */
-.barra{height:14px; background:var(--surface2); border:2px solid var(--line); padding:2px}
+.barra{height:14px; background-color:var(--surface2); background-image:repeating-linear-gradient(90deg, color-mix(in srgb, var(--line) 85%, transparent) 0 3px, transparent 3px 9px); background-origin:content-box; background-clip:content-box; border:2px solid var(--line); padding:2px}
 .barra i{display:block; height:100%; width:0; background:var(--c, var(--crea));
   -webkit-mask:repeating-linear-gradient(90deg,#000 0 7px,transparent 7px 9px); mask:repeating-linear-gradient(90deg,#000 0 7px,transparent 7px 9px); transition:width .6s steps(12)}
 
@@ -67,9 +68,10 @@ input:focus, textarea:focus{border-color:var(--prog); outline:none}
 .marca img{width:48px; height:48px; flex:none; image-rendering:pixelated}
 .marca div{display:flex; flex-direction:column; gap:8px; min-width:0}
 .marca h1{font:clamp(16px,3.6vw,26px)/1.25 var(--f-display); margin:0; color:var(--crea); text-transform:uppercase;
-  text-shadow:3px 3px 0 var(--prog), -2px -1px 0 color-mix(in srgb, var(--nucleo) 70%, transparent); animation:ciclo 2.4s steps(1) infinite, tambaleo 3.2s ease-in-out infinite; transform-origin:left center}
+  text-shadow:3px 3px 0 var(--prog), -2px -1px 0 color-mix(in srgb, var(--nucleo) 70%, transparent); transform:skewX(-5deg); animation:ciclo .5s steps(1) 4, tambaleo 1s ease-in-out 2; transform-origin:left center}
+.marca:hover h1{animation:ciclo .5s steps(1) infinite, tambaleo 1.4s ease-in-out infinite}
 @keyframes ciclo{0%{color:var(--crea)}33%{color:var(--nucleo)}66%{color:var(--prog)}}
-@keyframes tambaleo{0%,100%{transform:rotate(-1.2deg) skewX(-4deg)}50%{transform:rotate(1deg) skewX(-6deg)}}
+@keyframes tambaleo{0%,100%{transform:skewX(-5deg)}25%{transform:rotate(-1.5deg) skewX(-3deg)}75%{transform:rotate(1.2deg) skewX(-7deg)}}
 :root[data-modo="mapa"] .marca h1{text-shadow:3px 3px 0 color-mix(in srgb, var(--prog) 40%, transparent); animation:none; transform:skewX(-6deg)}
 .marca small{color:var(--muted); font:19px/1.15 var(--f-mono)}
 .global{flex:1 1 280px; min-width:0; display:grid; gap:6px}
@@ -94,7 +96,7 @@ input:focus, textarea:focus{border-color:var(--prog); outline:none}
 .lista .proy{display:block; font:16px/1.1 var(--f-mono); color:var(--c)}
 .lista .hecha label{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--line)}
 .lista button.txt{border:0; background:transparent; padding:0; text-align:left}
-.lista time{font:15px var(--f-mono); color:var(--muted); padding-top:2px; white-space:nowrap}
+.lista time{font:17px var(--f-mono); color:var(--muted); padding-top:2px; white-space:nowrap}
 .ideas-form{display:flex; gap:6px}
 .ideas-form input{flex:1; min-width:0}
 #ideas{margin-top:8px; max-height:200px; overflow-y:auto}
@@ -106,11 +108,11 @@ input:focus, textarea:focus{border-color:var(--prog); outline:none}
 .tarjeta{display:grid; gap:8px; align-content:start; padding:12px 14px; min-width:0}
 .tarjeta .tapa{display:block; width:100%; aspect-ratio:16/9; object-fit:cover; border:2px solid var(--line); max-width:100%}
 .tarjeta .etq{font-size:9px}
-.tarjeta .abrir{border:0; background:transparent; padding:0; text-align:left; font:600 19px/1.2 var(--f-body); color:var(--fg)}
+.tarjeta .abrir{border:0; background:transparent; padding:0; text-align:left; font:600 20px/1.2 var(--f-pixel); color:var(--fg)}
 .tarjeta .abrir:hover{color:var(--c)}
 .tarjeta .sig{font-size:15px; line-height:1.35}
 .tarjeta .sig span{color:var(--muted)}
-.tarjeta .pie{display:flex; align-items:center; gap:8px; font:16px var(--f-mono); color:var(--muted)}
+.tarjeta .pie{display:flex; align-items:center; gap:8px; font:18px var(--f-mono); color:var(--muted)}
 .tarjeta .pie .barra{flex:1; height:12px}
 .tarjeta .links{display:flex; flex-wrap:wrap; gap:6px}
 .tarjeta .links a{font:16px/1.2 var(--f-mono); text-transform:uppercase; text-decoration:none; border:2px solid var(--line); padding:1px 6px; color:var(--c)}
@@ -126,7 +128,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
 
 .chips{max-width:1280px; margin:18px auto 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:16px}
 .grupo ul{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px}
-.chip{display:flex; align-items:center; gap:8px; border:2px solid var(--line); background:var(--surface); padding:4px 10px 4px 5px; font-size:15px; box-shadow:2px 2px 0 color-mix(in srgb, var(--c) 60%, transparent)}
+.chip{display:flex; align-items:center; gap:8px; border:2px solid var(--line); background:var(--surface); padding:4px 10px 4px 5px; font:15px/1.3 var(--f-pixel); box-shadow:2px 2px 0 color-mix(in srgb, var(--c) 60%, transparent)}
 .chip .mini{width:20px; height:20px; background:conic-gradient(var(--c) calc(var(--p)*1%), var(--surface2) 0); display:grid; place-items:center; flex:none}
 .chip .mini::after{content:""; width:12px; height:12px; background:var(--surface)}
 .chip[aria-current="true"]{border-color:var(--c)}
@@ -178,7 +180,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
 .apr{list-style:none; margin:0; padding:0; display:grid; gap:8px}
 .apr li{padding:2px 0 2px 14px; font-size:15px; position:relative}
 .apr li::before{content:""; position:absolute; left:0; top:8px; width:7px; height:7px; background:var(--c)}
-.apr .meta{display:block; font:16px var(--f-mono); color:var(--muted); margin-top:2px}
+.apr .meta{display:block; font:17px var(--f-mono); color:var(--muted); margin-top:2px}
 .bitacora{list-style:none; margin:0; padding:0; display:grid; gap:6px}
 .bitacora li{display:grid; grid-template-columns:auto 1fr; gap:10px; font-size:15px}
 .bitacora time{font:16px var(--f-mono); color:var(--c); white-space:nowrap}
@@ -202,7 +204,17 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
 .hlista li{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:start; padding:10px 12px}
 .hlista time{font:17px var(--f-mono); color:var(--muted); white-space:nowrap}
 .hlista .txt{min-width:0}
-.hlista .ruta{display:block; font:16px var(--f-mono); color:var(--muted); margin-top:2px}
+.hlista .ruta{display:block; font:17px var(--f-mono); color:var(--muted); margin-top:2px}
+
+/* encabezados tipo escena */
+.cap{display:flex; flex-direction:column; gap:6px; margin:0 0 12px}
+.cap small{font:9px/1.6 var(--f-display); color:var(--crea); letter-spacing:.12em; text-transform:uppercase; transform:skewX(-10deg); transform-origin:left}
+.cap b{font:14px/1.5 var(--f-display); font-weight:400; color:var(--prog); text-transform:uppercase; text-shadow:2px 2px 0 color-mix(in srgb, var(--crea) 60%, transparent)}
+.red-t{max-width:1280px; margin:0 auto 12px}
+
+/* entrada del panel con desfase VHS */
+.panel.entra{animation:vhs .34s steps(4) 1}
+@keyframes vhs{0%{transform:translateX(-10px); filter:drop-shadow(4px 0 0 var(--crea)) drop-shadow(-4px 0 0 var(--prog)); opacity:.5}50%{transform:translateX(6px); filter:drop-shadow(-3px 0 0 var(--crea)) drop-shadow(3px 0 0 var(--prog)); opacity:.9}100%{transform:none; filter:none; opacity:1}}
 .hlista .ruta b{color:var(--c); font-weight:400}
 .borrar{border:2px solid var(--line); background:transparent; padding:2px 8px; font:16px var(--f-mono); color:var(--muted); text-transform:uppercase}
 .borrar.seguro{border-color:var(--danger); color:var(--danger)}
@@ -211,6 +223,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
 @media (max-width:720px){
   canvas{height:90vh; min-height:780px}
   .leyenda{display:none}
+  .escena{box-shadow:0 6px 0 var(--sombra)}
   .dia{grid-template-columns:1fr}
   .foco-grid{grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:82%; overflow-x:auto; scroll-snap-type:x mandatory; padding:0 6px 10px 0}
   .tarjeta{scroll-snap-align:start}
@@ -225,7 +238,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
   .hlista time{grid-column:1/-1; order:-1}
   .form-link{grid-template-columns:1fr}
 }
-@media (prefers-reduced-motion:reduce){ .barra i{transition:none} body{transition:none} .marca h1{animation:none; transform:skewX(-5deg)} }
+@media (prefers-reduced-motion:reduce){ .barra i{transition:none} body{transition:none} .marca h1, .marca:hover h1{animation:none; transform:skewX(-5deg)} .panel.entra{animation:none} }
 </style>
 
 <header class="top">
@@ -265,10 +278,11 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
 </section>
 
 <section class="foco" aria-labelledby="foco-t">
-  <h2 class="sec-t" id="foco-t">En qué estoy</h2>
+  <h2 class="cap" id="foco-t"><small>Escena 01</small><b>En qué estoy</b></h2>
   <div class="foco-grid" id="foco"><p class="vacio">Cargando los proyectos activos…</p></div>
 </section>
 
+<h2 class="cap red-t"><small>Escena 02</small><b>La red</b></h2>
 <section class="escena" aria-label="Mapa de la red">
   <canvas id="lienzo" aria-label="Red de proyectos interconectados. Usá la lista de abajo para abrir cada proyecto."></canvas>
   <div class="estado" id="estado"><div><b>Cargando la red…</b>Los proyectos aparecen acá en unos segundos.</div></div>
@@ -278,7 +292,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
 <section class="chips" id="chips" aria-label="Proyectos"></section>
 
 <section class="avance" aria-labelledby="avance-t">
-  <h2 id="avance-t">Avance semanal</h2>
+  <h2 class="cap" id="avance-t"><small>Escena 03</small><b>Avance semanal</b></h2>
   <p>Cada domingo se guarda una foto del progreso. Una semana cuenta para la racha si se terminó al menos una tarea.</p>
   <div class="avance-grid">
     <div class="graf px" id="graf"><p class="vacio">El primer repaso semanal guarda el punto de partida.</p></div>
@@ -287,7 +301,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
 </section>
 
 <section class="historial">
-  <h2>Historial de aprendizajes</h2>
+  <h2 class="cap"><small>Escena 04</small><b>Historial de aprendizajes</b></h2>
   <p id="hist-p">Todo lo que un proyecto aprendió y pasó a otros.</p>
   <ul class="hlista" id="hlista"><li><span class="vacio">Todavía no hay aprendizajes guardados.</span></li></ul>
 </section>
@@ -379,7 +393,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     } else {
       centros = hayTrab
         ? { prog:[W*0.25,H*0.46], nucleo:[W/2,H*0.38], crea:[W*0.75,H*0.46], trab:[W/2,H*0.83] }
-        : { prog:[W*0.25,H*0.50], nucleo:[W/2,H*0.50], crea:[W*0.75,H*0.50] };
+        : { prog:[W*0.25,H*0.50], nucleo:[W/2,H*0.40], crea:[W*0.75,H*0.50] };
       rx = Math.min(W*0.15, 200); ry = Math.min(H*0.36, 240);
     }
     ORDEN_AREAS.forEach(a => {
@@ -426,29 +440,30 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     const s = 4, w = Math.max(2, Math.ceil(W/s)), h = Math.max(2, Math.ceil(H/s));
     if (!bgc){ bgc = document.createElement("canvas"); bgx = bgc.getContext("2d"); }
     if (bgc.width!==w || bgc.height!==h){ bgc.width = w; bgc.height = h; estrellas = null; }
-    const g = bgx, hz = Math.round(h*0.66);
+    const g = bgx, hz = Math.round(h*0.72);
     const sky = g.createLinearGradient(0,0,0,hz); sky.addColorStop(0, C["--bg"]); sky.addColorStop(.6, C["--cielo"]); sky.addColorStop(1, C["--horizonte"]);
     g.fillStyle = sky; g.fillRect(0,0,w,hz);
-    if (!estrellas) estrellas = Array.from({length: Math.round(w*hz/110)}, () => ({ x:Math.floor(Math.random()*w), y:Math.floor(Math.random()*hz*0.75), f:Math.random()*6 }));
+    if (!estrellas) estrellas = Array.from({length: Math.round(w*hz/240)}, () => ({ x:Math.floor(Math.random()*w), y:Math.floor(Math.random()*hz*0.75), f:Math.random()*6 }));
     g.fillStyle = C["--fg"];
-    estrellas.forEach(e => { g.globalAlpha = .35 + .35*Math.sin(t/650 + e.f); g.fillRect(e.x, e.y, 1, 1); });
+    estrellas.forEach(e => { g.globalAlpha = .35 + .3*Math.sin(t/1100 + e.f); g.fillRect(e.x, e.y, 1, 1); });
     g.globalAlpha = 1;
-    const R = Math.round(Math.min(w, h)*0.24), cx = Math.round(w/2);
+    const R = Math.round(Math.min(w, h)*0.2), cx = Math.round(w/2);
     const sg = g.createLinearGradient(0, hz-R, 0, hz); sg.addColorStop(0, C["--sol1"]); sg.addColorStop(.5, C["--sol2"]); sg.addColorStop(1, C["--sol3"]);
     g.save(); g.beginPath(); g.arc(cx, hz, R, Math.PI, 0); g.closePath(); g.clip();
     g.globalAlpha = .8; g.fillStyle = sg; g.fillRect(cx-R, hz-R, 2*R, R); g.globalAlpha = 1;
-    const desliz = reduce ? 0 : (t/1400) % 1;
+    const desliz = reduce ? 0 : (t/2600) % 1;
     for (let k=0; k<7; k++){
       const f = (k + desliz)/7, y = Math.round(hz - R*0.62 + f*R*0.62), grosor = Math.max(1, Math.round(f*4));
       g.fillStyle = C["--horizonte"]; g.fillRect(cx-R, y, 2*R, grosor);
     }
     g.restore();
-    palmera(g, Math.round(w*0.07), hz, Math.round(h*0.34), 1);
-    palmera(g, Math.round(w*0.15), hz, Math.round(h*0.22), 1);
-    palmera(g, Math.round(w*0.92), hz, Math.round(h*0.3), -1);
+    const u = Math.min(w, h*0.8);
+    palmera(g, Math.round(w*0.07), hz, Math.round(u*0.42), 1);
+    palmera(g, Math.round(w*0.15), hz, Math.round(u*0.27), 1);
+    palmera(g, Math.round(w*0.92), hz, Math.round(u*0.37), -1);
     g.fillStyle = C["--suelo"]; g.fillRect(0, hz, w, h-hz);
     g.fillStyle = C["--sol3"]; g.fillRect(0, hz, w, 1);
-    const off = reduce ? 0 : (t/2400) % 1;
+    const off = reduce ? 0 : (t/4200) % 1;
     g.fillStyle = C["--grid"];
     for (let k=0; k<12; k++){
       const f = (k+off)/12, y = Math.round(hz + (h-hz)*f*f);
@@ -525,11 +540,11 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
         const b = puntoDe(d,t); if(!b) return;
         const activo = !sel || sel===a.origen || sel===d;
         const c = curva(o,b, .18 + ((ai+di)%3)*.04);
-        ctx.strokeStyle = hexA(col, activo ? (modo==="mapa"?.55:.45) : .06);
+        ctx.strokeStyle = hexA(col, sel ? (activo ? .75 : .05) : (modo==="mapa" ? .3 : .2));
         ctx.lineWidth = activo && sel ? 2.5 : 1.5;
-        if (modo!=="mapa" && activo){ ctx.shadowColor = col; ctx.shadowBlur = 8; }
+        if (modo!=="mapa" && sel && activo){ ctx.shadowColor = col; ctx.shadowBlur = 8; }
         ctx.beginPath(); ctx.moveTo(o.x,o.y); ctx.quadraticCurveTo(c.qx,c.qy,b.x,b.y); ctx.stroke(); ctx.shadowBlur = 0;
-        if (activo && !reduce){
+        if (sel && activo && !reduce){
           const u = ((t/2600) + ai*.37 + di*.21) % 1, p = enCurva(o,b,c,u);
           ctx.fillStyle = col; if (modo!=="mapa"){ ctx.shadowColor = col; ctx.shadowBlur = 12; }
           const sz = modo==="galaxia" ? 3 : 5; ctx.fillRect(Math.round(p.x-sz/2), Math.round(p.y-sz/2), sz, sz); ctx.shadowBlur = 0;
@@ -552,7 +567,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
         ctx.beginPath(); ctx.moveTo(q.x-s,q.y); ctx.lineTo(q.x+s,q.y); ctx.moveTo(q.x,q.y-s); ctx.lineTo(q.x,q.y+s); ctx.stroke();
         ctx.fillStyle = C["--fg"]; ctx.fillRect(q.x-2, q.y-2, 4, 4);
       } else {
-        ctx.shadowColor = col; ctx.shadowBlur = est==="pausa" ? 4 : 18 + (reduce?0:Math.sin(t/600 + q.y)*6);
+        ctx.shadowColor = col; ctx.shadowBlur = est==="pausa" ? 4 : 14 + (reduce?0:Math.sin(t/900 + q.y)*3);
         ctx.fillStyle = C["--bg"]; ctx.beginPath(); ctx.arc(q.x,q.y,rr,0,7); ctx.fill(); ctx.shadowBlur = 0;
         const g = ctx.createRadialGradient(q.x,q.y-rr*.3,0,q.x,q.y,rr); g.addColorStop(0, hexA(col,.75)); g.addColorStop(1, hexA(col,.08));
         ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x,q.y,rr,0,7); ctx.fill();
@@ -563,6 +578,10 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
       const fs = W<520 ? 17 : 19;
       ctx.font = `${fs}px VT323, "Courier New", monospace`; ctx.textAlign = "center"; ctx.textBaseline = "top";
       const etiqueta = (p.corto || p.nombre), y1 = q.y+rr+11;
+      if (modo==="miami"){
+        const an = Math.max(ctx.measureText(etiqueta).width, 40) + 12;
+        ctx.fillStyle = hexA(C["--bg"], .8); ctx.fillRect(Math.round(q.x-an/2), Math.round(y1-2), Math.round(an), fs*2);
+      }
       ctx.lineWidth = 4; ctx.strokeStyle = C["--bg"]; ctx.strokeText(etiqueta, q.x, y1);
       if (modo==="miami"){ ctx.fillStyle = hexA(C["--crea"], .9); ctx.fillText(etiqueta, q.x+1.5, y1+1.5); }
       ctx.fillStyle = C["--fg"]; ctx.fillText(etiqueta, q.x, y1);
@@ -666,7 +685,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
         <span class="etq">${AREAS[a].nombre}</span>
         <button class="abrir" id="foco-${esc(p.id)}">${esc(p.nombre)}</button>
         <span class="sig">${sig ? `<span>Próximo: </span>${esc(sig)}` : '<span>Sin tareas pendientes</span>'}</span>
-        <span class="pie"><span class="barra"><i style="width:${pct(p)}%"></i></span><span>${pct(p)}%</span><span>${haceTxt(p.ultimaActividad)}</span></span>
+        <span class="pie"><span class="barra"><i style="width:${pct(p)}%"></i></span><span>${(p.tareas||[]).filter(x=>x.hecha).length}/${(p.tareas||[]).length}</span><span>${haceTxt(p.ultimaActividad)}</span></span>
         ${links.length ? `<span class="links">${links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.titulo||"link")}</a>`).join("")}</span>` : ""}`;
       d.querySelector(".abrir").addEventListener("click", () => abrir(p.id));
       const img = d.querySelector(".tapa"); if (img) img.addEventListener("error", () => img.remove());
@@ -771,7 +790,10 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
 
   /* ---------- panel ---------- */
   const panel = $("#panel");
-  function abrir(id){ st.sel = id; st.editEspera = null; pintarPanel(); pintarListas(); redibujar(); }
+  function abrir(id){
+    st.sel = id; st.editEspera = null; pintarPanel(); pintarListas(); redibujar();
+    if (!reduce){ panel.classList.remove("entra"); void panel.offsetWidth; panel.classList.add("entra"); }
+  }
   function cerrar(){ st.sel = null; panel.hidden = true; pintarListas(); redibujar(); }
   addEventListener("keydown", e => { if (e.key==="Escape" && st.sel) cerrar(); });
 
@@ -807,7 +829,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
         <div class="cab"><div style="flex:1;min-width:0;display:grid;gap:8px"><span class="etq">${area.nombre}${p.publico===false ? " · solo en tu versión" : ""}</span><h3 id="p-nombre">${esc(p.nombre)}</h3></div>
           <button class="cerrar" id="p-cerrar" aria-label="Cerrar">×</button></div>
         ${p.descripcion ? `<p class="desc">${esc(p.descripcion)}</p>` : ""}
-        <div class="pfila"><div class="barra"><i style="width:${pct(p)}%"></i></div><span>${pct(p)}%</span></div>
+        <div class="pfila"><div class="barra"><i style="width:${pct(p)}%"></i></div><span>${(p.tareas||[]).filter(x=>x.hecha).length}/${(p.tareas||[]).length} · ${pct(p)}%</span></div>
         <div class="meta-fila"><span class="ultimo">Último avance: ${haceTxt(p.ultimaActividad)}</span>${control}</div>
       </header>
       <div class="cuerpo">
