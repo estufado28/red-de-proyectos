@@ -47,6 +47,29 @@ button{cursor:pointer}
 .modos button{border:0; background:transparent; padding:6px 12px; border-radius:8px; font-size:13px; color:var(--muted)}
 .modos button[aria-pressed="true"]{background:var(--surface2); color:var(--fg); box-shadow:inset 0 0 0 1px var(--line)}
 
+/* Hoy + Ideas (solo versión privada) */
+.dia{max-width:1280px; margin:0 auto 14px; display:grid; grid-template-columns:minmax(0,3fr) minmax(0,2fr); gap:12px}
+.caja{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:12px 14px; min-width:0}
+.caja-cab{display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:8px}
+.caja-cab .sec-t{margin:0}
+.caja-cab small{font:12px var(--f-mono); color:var(--muted); font-variant-numeric:tabular-nums}
+.hoy-lista{list-style:none; margin:0; padding:0; display:grid; gap:2px}
+.hoy-lista li{display:flex; align-items:flex-start; gap:10px; padding:6px 4px; border-radius:8px}
+.hoy-lista li:hover{background:var(--surface2)}
+.hoy-lista input{margin-top:3px; width:18px; height:18px; accent-color:var(--c); flex:none}
+.hoy-lista label{flex:1; min-width:0; font-size:15px}
+.hoy-lista .proy{display:block; font:12px var(--f-mono); color:var(--c)}
+.hoy-lista .hecha label{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--line)}
+.ideas-form{display:flex; gap:6px}
+.ideas-form input{flex:1; min-width:0; background:var(--surface2); border:1px solid var(--line); border-radius:10px; padding:8px 10px}
+.ideas-lista{list-style:none; margin:8px 0 0; padding:0; display:grid; gap:2px; max-height:190px; overflow-y:auto}
+.ideas-lista li{display:flex; gap:8px; align-items:flex-start; padding:5px 4px; font-size:14px}
+.ideas-lista li > span{flex:1; min-width:0}
+.ideas-lista time{font:11px var(--f-mono); color:var(--muted); padding-top:3px; white-space:nowrap}
+.ideas-lista .quitar{font-size:13px}
+.para-hoy{border:1px solid var(--line); background:transparent; border-radius:7px; padding:1px 7px; font:11px var(--f-mono); color:var(--muted); flex:none; margin-top:2px}
+.para-hoy[aria-pressed="true"]{border-color:var(--c); color:var(--c)}
+
 /* En qué estoy */
 .foco{max-width:1280px; margin:0 auto 14px}
 .foco-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr)); gap:10px}
@@ -144,6 +167,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
 @media (max-width:720px){
   canvas{height:90vh; min-height:780px}
   .leyenda{display:none}
+  .dia{grid-template-columns:1fr}
   .foco-grid{grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:80%; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:6px}
   .tarjeta{scroll-snap-align:start}
   .avance-grid{grid-template-columns:1fr}
@@ -178,6 +202,18 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     <button id="m-galaxia" data-m="galaxia">Galaxia</button>
   </div>
 </header>
+
+<section class="dia" id="dia" hidden>
+  <div class="caja">
+    <div class="caja-cab"><h2 class="sec-t">Hoy</h2><small id="hoy-cuenta"></small></div>
+    <div id="hoy"></div>
+  </div>
+  <div class="caja">
+    <div class="caja-cab"><h2 class="sec-t">Ideas</h2><small id="ideas-cuenta"></small></div>
+    <form class="ideas-form" id="f-idea"><input id="nueva-idea" placeholder="Anotá una idea…" autocomplete="off" aria-label="Nueva idea"><button class="btn">Guardar</button></form>
+    <ul class="ideas-lista" id="ideas"></ul>
+  </div>
+</section>
 
 <section class="foco" aria-labelledby="foco-t">
   <h2 class="sec-t" id="foco-t">En qué estoy</h2>
@@ -219,7 +255,8 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
   };
   const ORDEN_AREAS = ["prog","crea","trab","nucleo"];
   const ESTADOS = { activo:"Activo", pausa:"En pausa", terminado:"Terminado" };
-  const st = { proyectos:[], apr:[], hist:[], priv:{}, sel:null, edita:false, db:null, cargado:false, borrar:null };
+  const st = { proyectos:[], apr:[], hist:[], priv:{}, sel:null, edita:false, db:null, cargado:false, borrar:null, hoy:null, ideas:[], borrarIdea:null };
+  const MAX_HOY = 3;
   const $ = s => document.querySelector(s);
   const cv = $("#lienzo"), ctx = cv.getContext("2d");
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -464,7 +501,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     const presentes = ORDEN_AREAS.filter(a => st.proyectos.some(p => areaDe(p)===a));
     $("#leyenda").innerHTML = presentes.map(a => `<span style="--c:var(${AREAS[a].var})">${AREAS[a].nombre}</span>`).join("");
 
-    pintarFoco();
+    pintarFoco(); pintarDia();
 
     const chips = $("#chips"); chips.innerHTML = "";
     presentes.forEach(a => {
@@ -568,6 +605,47 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
       <div class="cifra"><b>${st.apr.length}</b><span>aprendizajes compartidos</span></div>`;
   }
 
+  /* ---------- hoy e ideas ---------- */
+  const hoyISO = () => { const d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,10); };
+  const itemsHoy = () => (st.hoy && st.hoy.fecha===hoyISO()) ? (st.hoy.items||[]) : [];
+  function tareaDe(it){
+    const p = st.proyectos.find(x=>x.id===it.p); if (!p) return null;
+    const i = (p.tareas||[]).findIndex(t=>t.texto===it.t);
+    return i<0 ? null : { p, i, t:p.tareas[i] };
+  }
+  const enHoy = (pid, texto) => itemsHoy().some(it => it.p===pid && it.t===texto);
+  function pintarDia(){
+    const sec = $("#dia");
+    if (!st.edita){ sec.hidden = true; return; }
+    sec.hidden = false;
+    const cont = $("#hoy");
+    const vivos = itemsHoy().map(it => ({ it, r:tareaDe(it) })).filter(x => x.r);
+    const hechas = vivos.filter(x => x.r.t.hecha).length;
+    $("#hoy-cuenta").textContent = vivos.length ? `${hechas} de ${vivos.length} hechas` : "";
+    if (!vivos.length){
+      let txt = `<p class="vacio">Elegí hasta ${MAX_HOY} tareas con el botón “hoy” en el panel de cada proyecto. Mañana se vacía solo.</p>`;
+      if (st.hoy && st.hoy.fecha !== hoyISO()){
+        const prev = (st.hoy.items||[]).map(tareaDe).filter(Boolean);
+        const quedan = prev.filter(r => !r.t.hecha);
+        if (prev.length) txt = `<p class="vacio">El ${esc(fechaCorta(st.hoy.fecha+"T12:00:00"))} terminaste ${prev.length-quedan.length} de ${prev.length}.</p>`
+          + (quedan.length ? `<button class="btn" id="retomar" style="margin:8px 0">Retomar ${quedan.length===1 ? "la que quedó" : "las "+quedan.length+" que quedaron"}</button>` : "") + txt;
+      }
+      cont.innerHTML = txt;
+      const r = $("#retomar"); if (r) r.addEventListener("click", retomarHoy);
+    } else {
+      cont.innerHTML = `<ul class="hoy-lista">${vivos.map(({r},k) => `<li class="${r.t.hecha?"hecha":""}" style="--c:var(${AREAS[areaDe(r.p)].var})"><input type="checkbox" id="hoy-${k}" ${r.t.hecha?"checked":""} data-k="${k}"><label for="hoy-${k}">${esc(r.t.texto)}<span class="proy">${esc(r.p.nombre)}</span></label><button class="quitar" data-s="${k}" aria-label="Sacar de hoy">×</button></li>`).join("")}</ul>`;
+      cont.querySelectorAll("input").forEach(c => c.addEventListener("change", () => { const x = vivos[+c.dataset.k]; cambiarTarea(x.r.p.id, x.r.i, c.checked); }));
+      cont.querySelectorAll(".quitar").forEach(b => b.addEventListener("click", () => { const x = vivos[+b.dataset.s]; alternarHoy(x.it.p, x.it.t); }));
+    }
+    const nuevas = st.ideas.filter(i => (i.estado||"nueva")==="nueva").sort((a,b) => String(b.fecha).localeCompare(String(a.fecha)));
+    $("#ideas-cuenta").textContent = nuevas.length ? `${nuevas.length} sin revisar` : "";
+    const ul = $("#ideas");
+    ul.innerHTML = nuevas.length
+      ? nuevas.map(i => `<li><span>${esc(i.texto)}</span><time datetime="${esc(i.fecha)}">${esc(fechaCorta(i.fecha))}</time><button class="quitar" data-id="${esc(i.id)}" aria-label="Descartar idea">${st.borrarIdea===i.id ? "¿Descartar?" : "×"}</button></li>`).join("")
+      : '<li class="vacio">Sin ideas pendientes. Las que anotes se revisan en el repaso del domingo.</li>';
+    ul.querySelectorAll(".quitar").forEach(b => b.addEventListener("click", () => descartarIdea(b.dataset.id)));
+  }
+
   /* ---------- panel ---------- */
   const panel = $("#panel");
   function abrir(id){ st.sel = id; pintarPanel(); pintarListas(); redibujar(); }
@@ -597,7 +675,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
         <div class="sec"><h4><span>Tareas</span><span>${(p.tareas||[]).filter(x=>x.hecha).length}/${(p.tareas||[]).length}</span></h4>
           <ul class="tareas">${(p.tareas||[]).map((t,i)=>`
             <li class="${t.hecha?"hecha":""}"><input type="checkbox" id="t-${p.id}-${i}" ${t.hecha?"checked":""} ${st.edita?"":"disabled"} data-i="${i}">
-            <label for="t-${p.id}-${i}">${esc(t.texto)}</label>${st.edita?`<button class="quitar" data-q="${i}" aria-label="Quitar tarea">×</button>`:""}</li>`).join("") || '<li class="vacio">Sin tareas todavía.</li>'}</ul>
+            <label for="t-${p.id}-${i}">${esc(t.texto)}</label>${st.edita && !t.hecha ? `<button class="para-hoy" data-h="${i}" aria-pressed="${enHoy(p.id,t.texto)}" aria-label="Elegir para hoy">hoy</button>` : ""}${st.edita?`<button class="quitar" data-q="${i}" aria-label="Quitar tarea">×</button>`:""}</li>`).join("") || '<li class="vacio">Sin tareas todavía.</li>'}</ul>
           ${st.edita ? `<form class="agregar" id="f-tarea"><input id="nueva-tarea" placeholder="Nueva tarea" autocomplete="off" aria-label="Nueva tarea"><button class="btn">Agregar</button></form>` : ""}
         </div>
         <div class="sec"><h4>Aprendió de otros</h4>
@@ -615,6 +693,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     panel.querySelectorAll(".estados button").forEach(b => b.addEventListener("click", () => cambiarEstado(p.id, b.dataset.e)));
     panel.querySelectorAll(".tareas input").forEach(c => c.addEventListener("change", () => cambiarTarea(p.id, +c.dataset.i, c.checked)));
     panel.querySelectorAll(".quitar").forEach(b => b.addEventListener("click", () => quitarTarea(p.id, +b.dataset.q)));
+    panel.querySelectorAll(".para-hoy").forEach(b => b.addEventListener("click", () => alternarHoy(p.id, p.tareas[+b.dataset.h].texto)));
     const f = $("#f-tarea"); if (f) f.addEventListener("submit", e => { e.preventDefault(); const v = $("#nueva-tarea").value.trim(); if (v) agregarTarea(p.id, v); });
     const g = $("#p-guardar"); if (g) g.addEventListener("click", () => guardarPriv(p.id));
     if (foco && document.getElementById(foco)) document.getElementById(foco).focus();
@@ -652,9 +731,43 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     enCola(() => st.db.doc("aprendizajes/"+id).delete());
   }
 
+  function guardarHoy(items){
+    if (!st.db) return;
+    const d = { fecha: hoyISO(), items };
+    st.hoy = d; pintarDia(); if (st.sel) pintarPanel();
+    enCola(() => st.db.doc("data/privado/hoy/actual").set(d));
+  }
+  function alternarHoy(pid, texto){
+    const items = itemsHoy().slice();
+    const k = items.findIndex(it => it.p===pid && it.t===texto);
+    if (k>=0) items.splice(k,1);
+    else {
+      const pendientes = items.filter(it => { const r = tareaDe(it); return r && !r.t.hecha; });
+      if (pendientes.length >= MAX_HOY){ $("#hoy-cuenta").textContent = `Ya tenés ${MAX_HOY} pendientes para hoy`; return; }
+      items.push({ p:pid, t:texto });
+    }
+    guardarHoy(items);
+  }
+  function retomarHoy(){
+    const quedan = ((st.hoy||{}).items||[]).filter(it => { const r = tareaDe(it); return r && !r.t.hecha; }).slice(0, MAX_HOY);
+    guardarHoy(quedan);
+  }
+  function agregarIdea(texto){
+    const id = "i" + Date.now().toString(36);
+    const d = { texto, fecha: new Date().toISOString(), estado:"nueva" };
+    st.ideas.push({ id, ...d }); pintarDia();
+    enCola(() => st.db.doc("data/privado/ideas/"+id).set(d));
+  }
+  function descartarIdea(id){
+    if (st.borrarIdea !== id){ st.borrarIdea = id; pintarDia(); setTimeout(() => { if (st.borrarIdea===id){ st.borrarIdea = null; pintarDia(); } }, 4000); return; }
+    st.borrarIdea = null; const i = st.ideas.find(x => x.id===id); if (i) i.estado = "descartada"; pintarDia();
+    enCola(() => st.db.doc("data/privado/ideas/"+id).update({ estado:"descartada" }));
+  }
+
   /* ---------- arranque ---------- */
   ponerModo(modo);
   medir(); pintarListas();
+  $("#f-idea").addEventListener("submit", e => { e.preventDefault(); const v = $("#nueva-idea").value.trim(); if (!v || !st.db) return; $("#nueva-idea").value = ""; agregarIdea(v); });
   if (!reduce){ corriendo = true; requestAnimationFrame(bucle); } else dibujar(0);
   const logo = $("#logo"); logo.addEventListener("load", () => { logo.hidden = false; }); logo.src = "logo.png";
 
