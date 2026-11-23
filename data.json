@@ -1,0 +1,780 @@
+{
+ "actualizado": "2026-11-22T21:46-03:00",
+ "proyectos": [
+  {
+   "area": "prog",
+   "corto": "Dardos",
+   "descripcion": "App Android para anotar puntos en 501, 301 y Cricket, de 1 a 4 jugadores.",
+   "estado": "pausa",
+   "nombre": "App de Dardos",
+   "orden": 1,
+   "tareas": [
+    {
+     "hecha": true,
+     "texto": "Crear el repo en GitHub"
+    },
+    {
+     "hecha": true,
+     "texto": "Elegir estilo minimalista claro"
+    },
+    {
+     "hecha": false,
+     "texto": "Menú con 501, 301 y Cricket"
+    },
+    {
+     "hecha": false,
+     "texto": "Anotar puntos de 1 a 4 jugadores"
+    },
+    {
+     "hecha": false,
+     "texto": "Compilar el APK y probarlo en el celu"
+    },
+    {
+     "hecha": false,
+     "texto": "Pulir el diseño"
+    },
+    {
+     "hecha": false,
+     "texto": "Publicar en Play Store"
+    }
+   ],
+   "ultimaActividad": "2026-10-17T12:00:00-03:00",
+   "id": "app-dardos"
+  },
+  {
+   "area": "crea",
+   "corto": "Pelis del bar",
+   "descripcion": "La colección de películas guardada y ordenada para las proyecciones del bar.",
+   "estado": "activo",
+   "nombre": "Archivo de Pelis",
+   "orden": 8,
+   "tareas": [
+    {
+     "hecha": false,
+     "texto": "Crear el grupo propio en Telegram"
+    },
+    {
+     "hecha": false,
+     "texto": "Definir cómo ordenarlas"
+    },
+    {
+     "hecha": false,
+     "texto": "Subir la colección"
+    },
+    {
+     "hecha": false,
+     "texto": "Índice para encontrar rápido cada peli"
+    }
+   ],
+   "ultimaActividad": "2026-11-19T12:00:00-03:00",
+   "id": "archivo-pelis"
+  },
+  {
+   "area": "prog",
+   "corto": "Bot Binance",
+   "descripcion": "Bot de trading spot para probar con un monto chico y ver cómo rinde.",
+   "estado": "pausa",
+   "nombre": "Bot de Binance",
+   "orden": 4,
+   "tareas": [
+    {
+     "hecha": false,
+     "texto": "Definir la estrategia"
+    },
+    {
+     "hecha": false,
+     "texto": "Probar en simulación sin plata real"
+    },
+    {
+     "hecha": false,
+     "texto": "Límites de monto por operación y por día"
+    },
+    {
+     "hecha": false,
+     "texto": "Probar con un monto chico"
+    },
+    {
+     "hecha": false,
+     "texto": "Medir el rendimiento"
+    }
+   ],
+   "ultimaActividad": "2026-10-09T12:00:00-03:00",
+   "id": "bot-binance"
+  },
+  {
+   "area": "crea",
+   "corto": "Cuentos",
+   "descripcion": "Publicar los cuentos propios como libro físico, online y audiolibro.",
+   "estado": "pausa",
+   "nombre": "Cuentos Infantiles",
+   "orden": 2,
+   "tareas": [
+    {
+     "hecha": true,
+     "texto": "Elegir el primer cuento: Pedro y Paco"
+    },
+    {
+     "hecha": false,
+     "texto": "Ilustraciones y fondos"
+    },
+    {
+     "hecha": false,
+     "texto": "Maquetar el libro"
+    },
+    {
+     "hecha": false,
+     "texto": "Versión online"
+    },
+    {
+     "hecha": false,
+     "texto": "Audiolibro"
+    },
+    {
+     "hecha": false,
+     "texto": "Publicar y vender"
+    }
+   ],
+   "ultimaActividad": "2026-10-18T12:00:00-03:00",
+   "id": "cuentos"
+  },
+  {
+   "area": "prog",
+   "corto": "Impresora 3D",
+   "descripcion": "Programa propio para calibrar e imprimir con la Ender 3 Neo, con informes e historial.",
+   "estado": "activo",
+   "nombre": "Control Impresora 3D",
+   "orden": 8,
+   "tareas": [
+    {
+     "hecha": false,
+     "texto": "Botonera de calibración (nivelado, Z offset, PID, e-steps)"
+    },
+    {
+     "hecha": false,
+     "texto": "Informes con historial"
+    },
+    {
+     "hecha": false,
+     "texto": "Página con fila de STL"
+    },
+    {
+     "hecha": false,
+     "texto": "Laminado automático con OrcaSlicer"
+    },
+    {
+     "hecha": false,
+     "texto": "Mandar impresiones desde el programa"
+    },
+    {
+     "hecha": false,
+     "texto": "Chequeo previo y parche de primera capa"
+    },
+    {
+     "hecha": false,
+     "texto": "Notificaciones al celu con ntfy"
+    }
+   ],
+   "ultimaActividad": "2026-11-19T12:00:00-03:00",
+   "id": "impresora-3d"
+  },
+  {
+   "area": "prog",
+   "corto": "IngredIA",
+   "descripcion": "Web app que arma recetas bajas en calorías con lo que tenés a mano ese día.",
+   "estado": "activo",
+   "nombre": "IngredIA",
+   "orden": 3,
+   "tareas": [
+    {
+     "hecha": true,
+     "texto": "Definir la app y sus reglas"
+    },
+    {
+     "hecha": true,
+     "texto": "Nombre y estilo visual \"Mercado\""
+    },
+    {
+     "hecha": false,
+     "texto": "Entrada con cuenta de Google"
+    },
+    {
+     "hecha": false,
+     "texto": "Cargar ingredientes escritos, tildados o por foto"
+    },
+    {
+     "hecha": false,
+     "texto": "Perfil con gustos, alergias y dieta"
+    },
+    {
+     "hecha": false,
+     "texto": "Calcular calorías y déficit leve o moderado"
+    },
+    {
+     "hecha": false,
+     "texto": "Recetas con IA gratis y recetario de respaldo"
+    },
+    {
+     "hecha": false,
+     "texto": "Tope de 10 recetas por día"
+    },
+    {
+     "hecha": false,
+     "texto": "Publicar la web app instalable"
+    }
+   ],
+   "ultimaActividad": "2026-10-26T12:00:00-03:00",
+   "id": "ingredia"
+  },
+  {
+   "area": "prog",
+   "corto": "Kindlet",
+   "descripcion": "Revivir la tablet vieja con una app propia para leer PDF y escuchar música.",
+   "estado": "pausa",
+   "nombre": "Kindlet",
+   "orden": 10,
+   "tareas": [
+    {
+     "hecha": false,
+     "texto": "Limpiar Android de lo que sobra"
+    },
+    {
+     "hecha": false,
+     "texto": "Pantalla de inicio al prender"
+    },
+    {
+     "hecha": false,
+     "texto": "Lector de PDF nítido con fondo sepia"
+    },
+    {
+     "hecha": false,
+     "texto": "Música de fondo por cable o Bluetooth"
+    },
+    {
+     "hecha": false,
+     "texto": "Probar que ande fluida"
+    }
+   ],
+   "ultimaActividad": "2026-10-18T12:00:00-03:00",
+   "id": "kindlet"
+  },
+  {
+   "area": "crea",
+   "corto": "Krita",
+   "descripcion": "Diseñar en Krita desde la compu: el taller de arte y diseño de toda la red.",
+   "estado": "pausa",
+   "nombre": "Diseño con Krita",
+   "orden": 1,
+   "tareas": [
+    {
+     "hecha": true,
+     "texto": "Instalar el conector de Krita"
+    },
+    {
+     "hecha": true,
+     "texto": "Crear la skill de control de Krita"
+    },
+    {
+     "hecha": false,
+     "texto": "Dejar la configuración de Krita guardada"
+    },
+    {
+     "hecha": false,
+     "texto": "Probar la técnica del negativo para trazar"
+    },
+    {
+     "hecha": false,
+     "texto": "Primer diseño completo con referencias"
+    },
+    {
+     "hecha": false,
+     "texto": "Usar todas las herramientas de Krita"
+    }
+   ],
+   "ultimaActividad": "2026-10-18T12:00:00-03:00",
+   "id": "krita"
+  },
+  {
+   "area": "crea",
+   "corto": "LOTM",
+   "descripcion": "Pasar la novela a libros físicos para imprimir, volumen por volumen.",
+   "estado": "pausa",
+   "nombre": "Libros Lord of the Mysteries",
+   "orden": 5,
+   "tareas": [
+    {
+     "hecha": true,
+     "texto": "Elegir formato: A5 tapa dura"
+    },
+    {
+     "hecha": true,
+     "texto": "Definir el libro 1 (capítulos 1 a 213)"
+    },
+    {
+     "hecha": false,
+     "texto": "Maquetar el libro 1"
+    },
+    {
+     "hecha": false,
+     "texto": "Imprimir el libro 1"
+    },
+    {
+     "hecha": false,
+     "texto": "Libro 2 desde el capítulo 214"
+    }
+   ],
+   "ultimaActividad": "2026-10-14T12:00:00-03:00",
+   "id": "lotm"
+  },
+  {
+   "area": "crea",
+   "corto": "Luna Rota",
+   "descripcion": "Juego propio dark fantasy neón nacido de Lineage 2: 3D low poly estilo PS1, para jugar con joystick.",
+   "estado": "activo",
+   "nombre": "Luna Rota",
+   "orden": 6,
+   "tareas": [
+    {
+     "hecha": true,
+     "texto": "Prototipo con el mundo de Lineage 2"
+    },
+    {
+     "hecha": true,
+     "texto": "Repo del juego en GitHub"
+    },
+    {
+     "hecha": true,
+     "texto": "Ordenar los archivos del juego en su carpeta"
+    },
+    {
+     "hecha": true,
+     "texto": "Definir Luna Rota: dark fantasy neón"
+    },
+    {
+     "hecha": true,
+     "texto": "Elegir estilo 3D low poly tipo PS1"
+    },
+    {
+     "hecha": false,
+     "texto": "Arte conceptual con Gemini y Copilot"
+    },
+    {
+     "hecha": false,
+     "texto": "Mapa propio con zonas de paz y peligrosas"
+    },
+    {
+     "hecha": false,
+     "texto": "Combate de skills, buffs y pasivas combinables"
+    },
+    {
+     "hecha": false,
+     "texto": "Primer bloque: subir hasta nivel 20"
+    },
+    {
+     "hecha": false,
+     "texto": "Quests, jefes y un jefe secreto"
+    },
+    {
+     "hecha": false,
+     "texto": "Co-op con primo y hermano (más adelante)"
+    }
+   ],
+   "ultimaActividad": "2026-11-14T12:00:00-03:00",
+   "id": "luna-rota"
+  },
+  {
+   "area": "prog",
+   "corto": "Monitor Batería",
+   "descripcion": "App Android para diagnosticar la batería, optimizar recursos y ver estadísticas del celular.",
+   "estado": "pausa",
+   "nombre": "Monitor Batería",
+   "orden": 2,
+   "tareas": [
+    {
+     "hecha": true,
+     "texto": "Crear el repo en GitHub"
+    },
+    {
+     "hecha": true,
+     "texto": "Compilar con GitHub y bajar el APK"
+    },
+    {
+     "hecha": false,
+     "texto": "Diagnóstico del estado de la batería"
+    },
+    {
+     "hecha": false,
+     "texto": "Optimizar recursos"
+    },
+    {
+     "hecha": false,
+     "texto": "Más estadísticas del celular"
+    },
+    {
+     "hecha": false,
+     "texto": "Diseñar la interfaz"
+    }
+   ],
+   "ultimaActividad": "2026-10-17T12:00:00-03:00",
+   "id": "monitor-bateria"
+  },
+  {
+   "area": "crea",
+   "corto": "Notebook Pro",
+   "descripcion": "Escritorio oscuro y minimalista con estética neón y acento magenta.",
+   "estado": "activo",
+   "nombre": "Notebook Ultra Pro",
+   "orden": 7,
+   "tareas": [
+    {
+     "hecha": true,
+     "texto": "Windows oscuro con acento magenta"
+    },
+    {
+     "hecha": true,
+     "texto": "Brave para el día a día"
+    },
+    {
+     "hecha": true,
+     "texto": "Escritorio ordenado en carpetas"
+    },
+    {
+     "hecha": false,
+     "texto": "Sacarle el jugo a Wallpaper Engine"
+    },
+    {
+     "hecha": false,
+     "texto": "Estética neón en todo"
+    },
+    {
+     "hecha": false,
+     "texto": "Widget de Spotify (más adelante)"
+    }
+   ],
+   "ultimaActividad": "2026-11-12T12:00:00-03:00",
+   "id": "notebook-pro"
+  },
+  {
+   "area": "prog",
+   "corto": "Parlante",
+   "descripcion": "Parlante Bluetooth con los parlantes de la tele Crown y carcasa de cassette gigante impresa en 3D.",
+   "estado": "activo",
+   "nombre": "Parlante Cassette",
+   "orden": 9,
+   "tareas": [
+    {
+     "hecha": true,
+     "texto": "Rescatar los parlantes de la Crown"
+    },
+    {
+     "hecha": true,
+     "texto": "Elegir el diseño: cassette gigante"
+    },
+    {
+     "hecha": false,
+     "texto": "Comprar el módulo amplificador Bluetooth"
+    },
+    {
+     "hecha": false,
+     "texto": "Modelar la carcasa"
+    },
+    {
+     "hecha": false,
+     "texto": "Imprimir la carcasa"
+    },
+    {
+     "hecha": false,
+     "texto": "Armar y probar"
+    }
+   ],
+   "ultimaActividad": "2026-11-19T12:00:00-03:00",
+   "id": "parlante-cassette"
+  },
+  {
+   "area": "nucleo",
+   "corto": "Red de Proyectos",
+   "descripcion": "Esta web: el mapa de todos los proyectos y el lugar donde se guarda lo que cada uno aprende.",
+   "estado": "activo",
+   "nombre": "Red de Proyectos",
+   "orden": 0,
+   "tareas": [
+    {
+     "hecha": true,
+     "texto": "Definir cómo funciona la red"
+    },
+    {
+     "hecha": true,
+     "texto": "Publicar la primera versión"
+    },
+    {
+     "hecha": true,
+     "texto": "Guardar la skill que lee y escribe aprendizajes"
+    },
+    {
+     "hecha": true,
+     "texto": "Versión pública para compartir sin cuenta"
+    },
+    {
+     "hecha": true,
+     "texto": "Sacar lo del trabajo de la versión pública"
+    },
+    {
+     "hecha": false,
+     "texto": "Probar los 3 modos en celu y PC"
+    },
+    {
+     "hecha": false,
+     "texto": "Sumar estadísticas (racha, tiempo por proyecto)"
+    },
+    {
+     "hecha": false,
+     "texto": "Mejorar el diseño con la paleta neón y lo aprendido en Krita"
+    }
+   ],
+   "ultimaActividad": "2026-11-22T21:40:00-03:00",
+   "id": "red-proyectos"
+  },
+  {
+   "area": "prog",
+   "corto": "Smartwatch",
+   "descripcion": "Darle otra vida al reloj que ya no sincroniza por Bluetooth.",
+   "estado": "activo",
+   "nombre": "Revivir Smartwatch",
+   "orden": 11,
+   "tareas": [
+    {
+     "hecha": false,
+     "texto": "Ver por qué no sincroniza"
+    },
+    {
+     "hecha": false,
+     "texto": "Probar otra app o firmware"
+    },
+    {
+     "hecha": false,
+     "texto": "Que muestre bien la hora"
+    },
+    {
+     "hecha": false,
+     "texto": "Darle una nueva vida útil"
+    }
+   ],
+   "ultimaActividad": "2026-11-06T12:00:00-03:00",
+   "id": "smartwatch"
+  },
+  {
+   "area": "crea",
+   "corto": "Fábulas TikTok",
+   "descripcion": "Videos 2D educativos con frutas, estilo dibujos viejos y música clásica.",
+   "estado": "pausa",
+   "nombre": "Fábulas TikTok",
+   "orden": 3,
+   "tareas": [
+    {
+     "hecha": true,
+     "texto": "Definir el estilo visual y musical"
+    },
+    {
+     "hecha": false,
+     "texto": "Primer guion de fábula"
+    },
+    {
+     "hecha": false,
+     "texto": "Armar el proceso de animación 2D"
+    },
+    {
+     "hecha": false,
+     "texto": "Publicar el primer video"
+    },
+    {
+     "hecha": false,
+     "texto": "Producir en cantidad (meta 20 por día)"
+    }
+   ],
+   "ultimaActividad": "2026-10-11T12:00:00-03:00",
+   "id": "videos-tiktok"
+  },
+  {
+   "area": "crea",
+   "corto": "Weirdcore",
+   "descripcion": "Videos inquietantes estilo weirdcore y cursed images, con arte hecho con IA.",
+   "estado": "pausa",
+   "nombre": "Videos Weirdcore",
+   "orden": 4,
+   "tareas": [
+    {
+     "hecha": true,
+     "texto": "Definir el estilo visual"
+    },
+    {
+     "hecha": false,
+     "texto": "Elegir herramientas de IA para el arte"
+    },
+    {
+     "hecha": false,
+     "texto": "Primer video"
+    },
+    {
+     "hecha": false,
+     "texto": "Decidir si se suma la amiga artista"
+    }
+   ],
+   "ultimaActividad": "2026-10-18T12:00:00-03:00",
+   "id": "videos-weirdcore"
+  }
+ ],
+ "aprendizajes": [
+  {
+   "destinos": [
+    "app-dardos",
+    "kindlet"
+   ],
+   "fecha": "2026-10-17T12:00:00-03:00",
+   "origen": "monitor-bateria",
+   "skill": "publicar-app-android",
+   "texto": "Compilar apps Android en GitHub y bajar el APK directo al celu",
+   "id": "a001"
+  },
+  {
+   "destinos": [
+    "monitor-bateria",
+    "kindlet"
+   ],
+   "fecha": "2026-10-17T13:00:00-03:00",
+   "origen": "app-dardos",
+   "skill": "diseno-apps-android",
+   "texto": "Pantallas Android con diseño profesional en Jetpack Compose",
+   "id": "a002"
+  },
+  {
+   "destinos": [
+    "cuentos",
+    "videos-tiktok",
+    "videos-weirdcore",
+    "red-proyectos",
+    "luna-rota"
+   ],
+   "fecha": "2026-10-18T13:00:00-03:00",
+   "origen": "krita",
+   "skill": "krita-control",
+   "texto": "Diseñar en Krita a través del conector, con referencias de internet y método de trazado",
+   "id": "a005"
+  },
+  {
+   "destinos": [
+    "cuentos"
+   ],
+   "fecha": "2026-10-14T19:00:00-03:00",
+   "origen": "lotm",
+   "texto": "Maquetar libros para imprenta en A5 con tapa dura",
+   "id": "a006"
+  },
+  {
+   "destinos": [
+    "bot-binance"
+   ],
+   "fecha": "2026-10-22T21:00:00-03:00",
+   "origen": "impresora-3d",
+   "texto": "Avisos al celular con la app ntfy (fin de tarea, errores, pedir confirmación)",
+   "id": "a007"
+  },
+  {
+   "destinos": [
+    "app-dardos",
+    "monitor-bateria",
+    "bot-binance",
+    "impresora-3d",
+    "kindlet",
+    "ingredia",
+    "luna-rota",
+    "parlante-cassette",
+    "smartwatch"
+   ],
+   "fecha": "2026-10-24T00:30:00-03:00",
+   "origen": "red-proyectos",
+   "skill": "entrevista-previa",
+   "texto": "Entrevistar antes de programar para no rehacer después",
+   "id": "a008"
+  },
+  {
+   "destinos": [
+    "cuentos",
+    "videos-tiktok",
+    "videos-weirdcore",
+    "ingredia"
+   ],
+   "fecha": "2026-11-14T12:00:00-03:00",
+   "origen": "luna-rota",
+   "texto": "Usar Gemini y Copilot gratis para hacer arte conceptual",
+   "id": "a012"
+  },
+  {
+   "destinos": [
+    "ingredia",
+    "app-dardos",
+    "monitor-bateria",
+    "kindlet",
+    "red-proyectos"
+   ],
+   "fecha": "2026-11-13T12:00:00-03:00",
+   "origen": "luna-rota",
+   "texto": "Avanzar por bloques grandes en vez de arreglos sueltos, para cuidar el límite de uso",
+   "id": "a013"
+  },
+  {
+   "destinos": [
+    "red-proyectos",
+    "luna-rota"
+   ],
+   "fecha": "2026-11-12T12:00:00-03:00",
+   "origen": "notebook-pro",
+   "texto": "Identidad visual neón synthwave: fondo oscuro con acento magenta",
+   "id": "a014"
+  },
+  {
+   "destinos": [
+    "smartwatch",
+    "kindlet"
+   ],
+   "fecha": "2026-11-19T12:00:00-03:00",
+   "origen": "parlante-cassette",
+   "texto": "Rescatar piezas de aparatos muertos y darles una vida nueva",
+   "id": "a015"
+  },
+  {
+   "destinos": [
+    "parlante-cassette"
+   ],
+   "fecha": "2026-11-19T13:00:00-03:00",
+   "origen": "impresora-3d",
+   "texto": "Diseñar e imprimir carcasas propias con la Ender 3 Neo",
+   "id": "a016"
+  },
+  {
+   "destinos": [
+    "red-proyectos"
+   ],
+   "fecha": "2026-10-26T12:00:00-03:00",
+   "origen": "ingredia",
+   "texto": "Web app instalable: funciona como app en iPhone y Android sin pasar por las tiendas",
+   "id": "a018"
+  }
+ ],
+ "historial": [
+  {
+   "fecha": "2026-10-24",
+   "n": 105701,
+   "pct": 17,
+   "hechas": 13,
+   "total": 75,
+   "aprendizajes": 8
+  },
+  {
+   "fecha": "2026-11-22",
+   "n": 105705,
+   "pct": 31,
+   "hechas": 17,
+   "total": 55,
+   "aprendizajes": 12
+  }
+ ]
+}
