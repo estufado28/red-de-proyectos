@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-11-22T21:46-03:00",
+ "actualizado": "2026-11-22T21:48-03:00",
  "proyectos": [
   {
    "area": "prog",
@@ -288,6 +288,14 @@
     {
      "hecha": false,
      "texto": "Usar todas las herramientas de Krita"
+    },
+    {
+     "hecha": false,
+     "texto": "Instalar el conector en la notebook"
+    },
+    {
+     "hecha": false,
+     "texto": "Logo neón de la Red de Proyectos"
     }
    ],
    "ultimaActividad": "2026-10-18T12:00:00-03:00",
@@ -518,19 +526,39 @@
      "texto": "Sacar lo del trabajo de la versión pública"
     },
     {
+     "hecha": true,
+     "texto": "Repaso semanal automático"
+    },
+    {
+     "hecha": true,
+     "texto": "Estados y último avance de cada proyecto"
+    },
+    {
+     "hecha": true,
+     "texto": "Grupo Trabajo solo en la versión privada"
+    },
+    {
+     "hecha": true,
+     "texto": "Sección \"En qué estoy\""
+    },
+    {
+     "hecha": true,
+     "texto": "Estética neón synthwave"
+    },
+    {
+     "hecha": true,
+     "texto": "Avance semanal con racha"
+    },
+    {
      "hecha": false,
      "texto": "Probar los 3 modos en celu y PC"
     },
     {
      "hecha": false,
-     "texto": "Sumar estadísticas (racha, tiempo por proyecto)"
-    },
-    {
-     "hecha": false,
-     "texto": "Mejorar el diseño con la paleta neón y lo aprendido en Krita"
+     "texto": "Logo hecho en Krita"
     }
    ],
-   "ultimaActividad": "2026-11-22T21:40:00-03:00",
+   "ultimaActividad": "2026-11-22T22:00:00-03:00",
    "id": "red-proyectos"
   },
   {
@@ -763,17 +791,17 @@
   {
    "fecha": "2026-10-24",
    "n": 105701,
-   "pct": 17,
+   "aprendizajes": 8,
    "hechas": 13,
-   "total": 75,
-   "aprendizajes": 8
+   "pct": 17,
+   "total": 75
   },
   {
    "fecha": "2026-11-22",
    "n": 105705,
-   "pct": 31,
-   "hechas": 17,
-   "total": 55,
+   "pct": 38,
+   "hechas": 23,
+   "total": 60,
    "aprendizajes": 12
   }
  ]
