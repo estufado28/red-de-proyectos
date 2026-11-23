@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-11-22T21:48-03:00",
+ "actualizado": "2026-11-22T22:15-03:00",
  "proyectos": [
   {
    "area": "prog",
@@ -799,10 +799,10 @@
   {
    "fecha": "2026-11-22",
    "n": 105705,
-   "pct": 38,
+   "aprendizajes": 12,
    "hechas": 23,
-   "total": 60,
-   "aprendizajes": 12
+   "pct": 38,
+   "total": 60
   }
  ]
 }

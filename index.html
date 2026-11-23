@@ -1,186 +1,231 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" href="logo.png"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
 <title>Red de Proyectos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600;700&family=VT323&display=swap">
 <style>
-/* Layout: cabecera con progreso · "En qué estoy" · lienzo de la red · grupos · avance semanal · historial.
-   Panel del nodo: lateral en PC, hoja inferior en celu. Cada modo visual fija su propia paleta;
-   Neuronal es synthwave (la estética de la Notebook Pro). */
+/* Layout: cabecera pixel con progreso · Hoy / Esperando / Ideas · En qué estoy · lienzo de la red (sol synthwave pixelado)
+   · grupos · avance semanal · historial. Panel del nodo: lateral en PC, hoja inferior en celu.
+   Dirección: Hotline Miami — noche violeta, rosa chicle, cian y amarillo neón, letras pixel, sombras duras, CRT. */
 :root{
-  --bg:#0c0818; --surface:#160f28; --surface2:#1f1636; --fg:#efeaff; --muted:#9d93c2; --line:#30264f;
-  --prog:#2de2e6; --crea:#ff3cac; --trab:#a78bfa; --nucleo:#ffd319; --ok:#5be39a; --danger:#ff6b6b; --grid:#ff3cac;
-  --f-display:"Chakra Petch", "Trebuchet MS", system-ui, sans-serif;
-  --f-body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --f-mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --bg:#0d0221; --surface:#1a0838; --surface2:#26104d; --fg:#fff0fb; --muted:#bfa3e0; --line:#4a2a85;
+  --prog:#00f0ff; --crea:#ff2a6d; --trab:#b967ff; --nucleo:#ffe14d; --ok:#5dffb0; --danger:#ff5b5b;
+  --sombra:#ff2a6d; --grid:#ff2a6d;
+  --cielo:#2a0a4a; --horizonte:#8e1b6c; --sol1:#ffe66d; --sol2:#ff9e3d; --sol3:#ff2a6d; --suelo:#12042a; --palma:#06010e;
+  --crt:.16;
+  --f-display:"Press Start 2P", "Courier New", monospace;
+  --f-body:"Pixelify Sans", "Trebuchet MS", system-ui, sans-serif;
+  --f-mono:"VT323", "Courier New", ui-monospace, monospace;
   color-scheme:dark;
 }
 :root[data-modo="mapa"]{
-  --bg:#eef0f6; --surface:#ffffff; --surface2:#f3f4f9; --fg:#1d1b2e; --muted:#5d5a75; --line:#d7d6e4;
-  --prog:#0b7c8f; --crea:#c2186b; --trab:#6d3fd6; --nucleo:#a66f00; --ok:#1f8a4c; --danger:#c62f2f; --grid:#c2186b;
+  --bg:#f3eefb; --surface:#ffffff; --surface2:#f1eaf9; --fg:#1d1233; --muted:#5f5180; --line:#cdbfe6;
+  --prog:#0a7f99; --crea:#d01560; --trab:#6b2fd6; --nucleo:#a86d00; --ok:#1f8a4c; --danger:#c62f2f;
+  --sombra:#d01560; --grid:#d01560;
+  --cielo:#f3eefb; --horizonte:#f3eefb; --sol1:#ffd84d; --sol2:#ff9e3d; --sol3:#ff2a6d; --suelo:#f3eefb; --palma:#1d1233;
+  --crt:0;
   color-scheme:light;
 }
 :root[data-modo="galaxia"]{
-  --bg:#06040f; --surface:#141026; --surface2:#1d1735; --fg:#efe9ff; --muted:#9d94bf; --line:#2e2650;
-  --prog:#93b9ff; --crea:#ffb08a; --trab:#d3c2ff; --nucleo:#fff1a8; --ok:#9be8c0; --danger:#ff8a8a; --grid:#93b9ff;
+  --bg:#06040f; --surface:#141026; --surface2:#1d1735; --fg:#efe9ff; --muted:#a79ed0; --line:#352b5e;
+  --prog:#93b9ff; --crea:#ffb08a; --trab:#d3c2ff; --nucleo:#fff1a8; --ok:#9be8c0; --danger:#ff8a8a;
+  --sombra:#93b9ff; --grid:#93b9ff;
+  --cielo:#06040f; --horizonte:#06040f; --sol1:#fff1a8; --sol2:#ffb08a; --sol3:#93b9ff; --suelo:#06040f; --palma:#06040f;
+  --crt:.08;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{background:var(--bg)}
-body{color:var(--fg); font:15px/1.5 var(--f-body); padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)); padding-block:12px 40px; transition:background .4s}
+body{color:var(--fg); font:16px/1.45 var(--f-body); padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)); padding-block:14px 48px; transition:background .4s}
+body::after{content:""; position:fixed; inset:0; pointer-events:none; z-index:40; opacity:var(--crt);
+  background:repeating-linear-gradient(to bottom, rgba(0,0,0,.9) 0 1px, transparent 1px 3px);}
 button,input,textarea{font:inherit; color:inherit}
 button{cursor:pointer}
-:focus-visible{outline:2px solid var(--nucleo); outline-offset:2px; border-radius:6px}
-.sec-t{font:600 12px var(--f-mono); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 8px}
+:focus-visible{outline:2px dashed var(--nucleo); outline-offset:2px}
+a{color:var(--prog)}
+.sec-t{font:10px/1.6 var(--f-display); letter-spacing:.08em; text-transform:uppercase; color:var(--nucleo); margin:0 0 10px}
 
-.top{display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px; max-width:1280px; margin:0 auto 14px}
-.marca{display:flex; align-items:center; gap:12px; min-width:0; flex:1 1 240px}
-.marca img{width:44px; height:44px; flex:none; border-radius:10px}
-.marca div{display:flex; flex-direction:column; gap:2px; min-width:0}
-.marca h1{font:700 clamp(22px,4vw,30px)/1.1 var(--f-display); margin:0; letter-spacing:.01em; text-wrap:balance}
-.marca small{color:var(--muted); font-size:13px}
-.global{flex:1 1 260px; min-width:0; display:grid; gap:6px}
-.global .fila{display:flex; justify-content:space-between; gap:10px; font:600 12px var(--f-mono); color:var(--muted); letter-spacing:.04em; text-transform:uppercase}
-.global .fila b{color:var(--fg); font-variant-numeric:tabular-nums}
-.barra{height:8px; border-radius:99px; background:var(--surface2); overflow:hidden; border:1px solid var(--line)}
-.barra i{display:block; height:100%; width:0; border-radius:99px; background:linear-gradient(90deg,var(--prog),var(--trab),var(--crea)); transition:width .6s}
-.modos{display:flex; gap:4px; padding:4px; background:var(--surface); border:1px solid var(--line); border-radius:12px}
-.modos button{border:0; background:transparent; padding:6px 12px; border-radius:8px; font-size:13px; color:var(--muted)}
-.modos button[aria-pressed="true"]{background:var(--surface2); color:var(--fg); box-shadow:inset 0 0 0 1px var(--line)}
+/* bloques pixel: sin redondeo, borde y sombra dura */
+.px{background:var(--surface); border:2px solid var(--line); box-shadow:4px 4px 0 color-mix(in srgb, var(--c, var(--sombra)) 70%, transparent)}
+.btn{border:2px solid var(--line); background:var(--surface2); padding:6px 12px; font:18px/1 var(--f-mono); text-transform:uppercase; letter-spacing:.04em; box-shadow:3px 3px 0 var(--line)}
+.btn:active{transform:translate(2px,2px); box-shadow:1px 1px 0 var(--line)}
+.btn.prim{background:var(--c, var(--crea)); color:var(--bg); border-color:var(--c, var(--crea)); box-shadow:3px 3px 0 var(--fg)}
+.mini-btn{border:2px solid var(--line); background:transparent; padding:0 6px; font:15px/1.3 var(--f-mono); color:var(--muted); flex:none; text-transform:uppercase}
+.mini-btn[aria-pressed="true"]{border-color:var(--c); color:var(--c)}
+.quitar{border:0; background:transparent; color:var(--muted); padding:0 4px; font:20px/1 var(--f-mono); flex:none}
+.quitar:hover{color:var(--danger)}
+input[type=text], input:not([type]), textarea{background:var(--surface2); border:2px solid var(--line); padding:7px 10px; border-radius:0}
+input:focus, textarea:focus{border-color:var(--prog); outline:none}
 
-/* Hoy + Ideas (solo versión privada) */
-.dia{max-width:1280px; margin:0 auto 14px; display:grid; grid-template-columns:minmax(0,3fr) minmax(0,2fr); gap:12px}
-.caja{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:12px 14px; min-width:0}
-.caja-cab{display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:8px}
+/* barra por bloques */
+.barra{height:14px; background:var(--surface2); border:2px solid var(--line); padding:2px}
+.barra i{display:block; height:100%; width:0; background:var(--c, var(--crea));
+  -webkit-mask:repeating-linear-gradient(90deg,#000 0 7px,transparent 7px 9px); mask:repeating-linear-gradient(90deg,#000 0 7px,transparent 7px 9px); transition:width .6s steps(12)}
+
+/* cabecera */
+.top{display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px; max-width:1280px; margin:0 auto 18px}
+.marca{display:flex; align-items:center; gap:12px; min-width:0; flex:1 1 280px}
+.marca img{width:48px; height:48px; flex:none; image-rendering:pixelated}
+.marca div{display:flex; flex-direction:column; gap:8px; min-width:0}
+.marca h1{font:clamp(16px,3.6vw,26px)/1.25 var(--f-display); margin:0; color:var(--crea); text-transform:uppercase;
+  text-shadow:3px 3px 0 var(--prog), -2px -1px 0 color-mix(in srgb, var(--nucleo) 70%, transparent); animation:ciclo 2.4s steps(1) infinite, tambaleo 3.2s ease-in-out infinite; transform-origin:left center}
+@keyframes ciclo{0%{color:var(--crea)}33%{color:var(--nucleo)}66%{color:var(--prog)}}
+@keyframes tambaleo{0%,100%{transform:rotate(-1.2deg) skewX(-4deg)}50%{transform:rotate(1deg) skewX(-6deg)}}
+:root[data-modo="mapa"] .marca h1{text-shadow:3px 3px 0 color-mix(in srgb, var(--prog) 40%, transparent); animation:none; transform:skewX(-6deg)}
+.marca small{color:var(--muted); font:19px/1.15 var(--f-mono)}
+.global{flex:1 1 280px; min-width:0; display:grid; gap:6px}
+.global .fila{display:flex; justify-content:space-between; gap:10px; font:18px/1 var(--f-mono); color:var(--muted); text-transform:uppercase}
+.global .fila b{color:var(--nucleo); font:14px/1 var(--f-display); font-weight:400}
+.global .barra i{background:linear-gradient(90deg, var(--prog), var(--trab), var(--crea), var(--nucleo))}
+.modos{display:flex; gap:4px; padding:4px; background:var(--surface); border:2px solid var(--line)}
+.modos button{border:2px solid transparent; background:transparent; padding:5px 10px; font:18px/1 var(--f-mono); color:var(--muted); text-transform:uppercase}
+.modos button[aria-pressed="true"]{border-color:var(--crea); color:var(--fg); background:var(--surface2)}
+
+/* Hoy · Esperando · Ideas */
+.dia{max-width:1280px; margin:0 auto 18px; display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr); gap:14px}
+.caja{padding:12px 14px; min-width:0}
+.caja-cab{display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:6px}
 .caja-cab .sec-t{margin:0}
-.caja-cab small{font:12px var(--f-mono); color:var(--muted); font-variant-numeric:tabular-nums}
-.hoy-lista{list-style:none; margin:0; padding:0; display:grid; gap:2px}
-.hoy-lista li{display:flex; align-items:flex-start; gap:10px; padding:6px 4px; border-radius:8px}
-.hoy-lista li:hover{background:var(--surface2)}
-.hoy-lista input{margin-top:3px; width:18px; height:18px; accent-color:var(--c); flex:none}
-.hoy-lista label{flex:1; min-width:0; font-size:15px}
-.hoy-lista .proy{display:block; font:12px var(--f-mono); color:var(--c)}
-.hoy-lista .hecha label{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--line)}
+.caja-cab small{font:17px var(--f-mono); color:var(--muted)}
+.lista{list-style:none; margin:0; padding:0; display:grid; gap:2px}
+.lista li{display:flex; align-items:flex-start; gap:10px; padding:5px 4px}
+.lista li:hover{background:var(--surface2)}
+.lista input[type=checkbox]{margin-top:4px; width:18px; height:18px; accent-color:var(--c); flex:none}
+.lista label, .lista .txt{flex:1; min-width:0}
+.lista .proy{display:block; font:16px/1.1 var(--f-mono); color:var(--c)}
+.lista .hecha label{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--line)}
+.lista button.txt{border:0; background:transparent; padding:0; text-align:left}
+.lista time{font:15px var(--f-mono); color:var(--muted); padding-top:2px; white-space:nowrap}
 .ideas-form{display:flex; gap:6px}
-.ideas-form input{flex:1; min-width:0; background:var(--surface2); border:1px solid var(--line); border-radius:10px; padding:8px 10px}
-.ideas-lista{list-style:none; margin:8px 0 0; padding:0; display:grid; gap:2px; max-height:190px; overflow-y:auto}
-.ideas-lista li{display:flex; gap:8px; align-items:flex-start; padding:5px 4px; font-size:14px}
-.ideas-lista li > span{flex:1; min-width:0}
-.ideas-lista time{font:11px var(--f-mono); color:var(--muted); padding-top:3px; white-space:nowrap}
-.ideas-lista .quitar{font-size:13px}
-.para-hoy{border:1px solid var(--line); background:transparent; border-radius:7px; padding:1px 7px; font:11px var(--f-mono); color:var(--muted); flex:none; margin-top:2px}
-.para-hoy[aria-pressed="true"]{border-color:var(--c); color:var(--c)}
+.ideas-form input{flex:1; min-width:0}
+#ideas{margin-top:8px; max-height:200px; overflow-y:auto}
+.vacio{color:var(--muted); margin:0; font-size:15px}
 
 /* En qué estoy */
-.foco{max-width:1280px; margin:0 auto 14px}
-.foco-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr)); gap:10px}
-.tarjeta{display:grid; gap:8px; text-align:left; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:12px 14px; min-width:0}
-.tarjeta:hover{border-color:var(--c)}
-.tarjeta .etq{font-size:10px}
-.tarjeta .nom{font:600 17px/1.2 var(--f-display)}
-.tarjeta .sig{font-size:14px; line-height:1.4}
+.foco{max-width:1280px; margin:0 auto 18px}
+.foco-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr)); gap:14px}
+.tarjeta{display:grid; gap:8px; align-content:start; padding:12px 14px; min-width:0}
+.tarjeta .tapa{display:block; width:100%; aspect-ratio:16/9; object-fit:cover; border:2px solid var(--line); max-width:100%}
+.tarjeta .etq{font-size:9px}
+.tarjeta .abrir{border:0; background:transparent; padding:0; text-align:left; font:600 19px/1.2 var(--f-body); color:var(--fg)}
+.tarjeta .abrir:hover{color:var(--c)}
+.tarjeta .sig{font-size:15px; line-height:1.35}
 .tarjeta .sig span{color:var(--muted)}
-.tarjeta .pie{display:flex; align-items:center; gap:8px; font:12px var(--f-mono); color:var(--muted); font-variant-numeric:tabular-nums}
-.tarjeta .pie .barra{flex:1; height:5px}
-.tarjeta .pie .barra i{background:var(--c)}
+.tarjeta .pie{display:flex; align-items:center; gap:8px; font:16px var(--f-mono); color:var(--muted)}
+.tarjeta .pie .barra{flex:1; height:12px}
+.tarjeta .links{display:flex; flex-wrap:wrap; gap:6px}
+.tarjeta .links a{font:16px/1.2 var(--f-mono); text-transform:uppercase; text-decoration:none; border:2px solid var(--line); padding:1px 6px; color:var(--c)}
+.tarjeta .links a:hover{border-color:var(--c)}
 
-.escena{position:relative; max-width:1280px; margin:0 auto; border:1px solid var(--line); border-radius:18px; overflow:hidden; background:var(--bg)}
+/* escena */
+.escena{position:relative; max-width:1280px; margin:0 auto; border:2px solid var(--line); overflow:hidden; background:var(--bg); box-shadow:6px 6px 0 var(--sombra)}
 canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; touch-action:manipulation}
-.leyenda{position:absolute; left:12px; bottom:10px; display:flex; flex-wrap:wrap; gap:6px 14px; font:12px var(--f-mono); color:var(--muted); pointer-events:none}
-.leyenda span::before{content:""; display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; vertical-align:-1px; background:var(--c)}
+.leyenda{position:absolute; left:12px; bottom:10px; display:flex; flex-wrap:wrap; gap:4px 14px; font:17px var(--f-mono); color:var(--fg); pointer-events:none; text-shadow:1px 1px 0 var(--bg)}
+.leyenda span::before{content:""; display:inline-block; width:10px; height:10px; margin-right:6px; vertical-align:-1px; background:var(--c)}
 .estado{position:absolute; inset:0; display:grid; place-items:center; text-align:center; color:var(--muted); padding:24px; pointer-events:none}
-.estado b{display:block; color:var(--fg); font:600 18px var(--f-display); margin-bottom:4px}
+.estado b{display:block; color:var(--fg); font:12px/1.6 var(--f-display); margin-bottom:6px}
 
-.chips{max-width:1280px; margin:14px auto 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:14px}
-.grupo ul{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px}
-.chip{display:flex; align-items:center; gap:8px; border:1px solid var(--line); background:var(--surface); border-radius:99px; padding:5px 12px 5px 6px; font-size:13px}
-.chip .mini{width:22px; height:22px; border-radius:50%; background:conic-gradient(var(--c) calc(var(--p)*1%), var(--surface2) 0); display:grid; place-items:center; flex:none}
-.chip .mini::after{content:""; width:14px; height:14px; border-radius:50%; background:var(--surface)}
-.chip[aria-current="true"]{border-color:var(--c); box-shadow:0 0 0 1px var(--c)}
-.chip.pausa{border-style:dashed; color:var(--muted)}
+.chips{max-width:1280px; margin:18px auto 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:16px}
+.grupo ul{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px}
+.chip{display:flex; align-items:center; gap:8px; border:2px solid var(--line); background:var(--surface); padding:4px 10px 4px 5px; font-size:15px; box-shadow:2px 2px 0 color-mix(in srgb, var(--c) 60%, transparent)}
+.chip .mini{width:20px; height:20px; background:conic-gradient(var(--c) calc(var(--p)*1%), var(--surface2) 0); display:grid; place-items:center; flex:none}
+.chip .mini::after{content:""; width:12px; height:12px; background:var(--surface)}
+.chip[aria-current="true"]{border-color:var(--c)}
+.chip.pausa{border-style:dashed; color:var(--muted); box-shadow:none}
 
-/* Avance semanal */
-.avance{max-width:1280px; margin:28px auto 0}
-.avance h2, .historial h2{font:700 20px var(--f-display); margin:0 0 4px}
-.avance > p, .historial > p{color:var(--muted); margin:0 0 12px; max-width:65ch}
-.avance-grid{display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr); gap:12px}
-.graf{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; min-width:0}
+/* avance semanal */
+.avance{max-width:1280px; margin:32px auto 0}
+.avance h2, .historial h2{font:14px/1.5 var(--f-display); margin:0 0 6px; color:var(--prog); text-transform:uppercase}
+.avance > p, .historial > p{color:var(--muted); margin:0 0 14px; max-width:65ch}
+.avance-grid{display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr); gap:14px}
+.graf{padding:14px; min-width:0}
 .graf svg{width:100%; height:auto; display:block; overflow:visible}
-.cifras{display:grid; gap:10px; align-content:start}
-.cifra{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:12px 14px}
-.cifra b{display:block; font:700 30px/1.1 var(--f-display); font-variant-numeric:tabular-nums}
-.cifra span{color:var(--muted); font-size:13px}
+.cifras{display:grid; gap:12px; align-content:start}
+.cifra{padding:12px 14px}
+.cifra b{display:block; font:22px/1.3 var(--f-display); font-weight:400; color:var(--nucleo)}
+.cifra span{color:var(--muted); font:18px/1.1 var(--f-mono)}
 
-/* Panel del nodo */
-.panel{position:fixed; z-index:20; background:var(--surface); border:1px solid var(--line); display:flex; flex-direction:column; overflow:hidden;
-  right:max(16px, env(safe-area-inset-right,0px)); top:calc(16px + env(safe-area-inset-top,0px)); bottom:calc(16px + env(safe-area-inset-bottom,0px)); width:min(400px, calc(100vw - 32px)); border-radius:18px; box-shadow:0 20px 60px rgba(0,0,0,.35)}
-.panel header{padding:18px 18px 12px; border-bottom:1px solid var(--line); display:grid; gap:10px}
+/* panel */
+.panel{position:fixed; z-index:20; background:var(--surface); border:2px solid var(--c, var(--line)); display:flex; flex-direction:column; overflow:hidden;
+  right:max(16px, env(safe-area-inset-right,0px)); top:calc(16px + env(safe-area-inset-top,0px)); bottom:calc(16px + env(safe-area-inset-bottom,0px)); width:min(420px, calc(100vw - 32px)); box-shadow:-6px 6px 0 color-mix(in srgb, var(--c) 55%, transparent)}
+.panel header{padding:16px 16px 12px; border-bottom:2px solid var(--line); display:grid; gap:10px}
 .panel .cab{display:flex; align-items:flex-start; gap:10px}
-.panel .cab h3{font:700 22px/1.15 var(--f-display); margin:0; flex:1; min-width:0; text-wrap:balance}
-.cerrar{border:1px solid var(--line); background:var(--surface2); width:34px; height:34px; border-radius:10px; flex:none; font-size:18px; line-height:1}
-.etq{display:inline-flex; align-items:center; gap:6px; font:600 11px var(--f-mono); letter-spacing:.08em; text-transform:uppercase; color:var(--c)}
-.etq::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--c); flex:none}
-.panel .desc{color:var(--muted); margin:0; font-size:14px}
-.pfila{display:flex; align-items:center; gap:10px; font:600 13px var(--f-mono); font-variant-numeric:tabular-nums}
+.panel .cab h3{font:15px/1.5 var(--f-display); margin:0; flex:1; min-width:0; color:var(--c); text-transform:uppercase}
+.cerrar{border:2px solid var(--line); background:var(--surface2); width:34px; height:34px; flex:none; font:22px/1 var(--f-mono)}
+.etq{display:inline-flex; align-items:center; gap:6px; font:9px/1.6 var(--f-display); letter-spacing:.06em; text-transform:uppercase; color:var(--c)}
+.etq::before{content:""; width:8px; height:8px; background:var(--c); flex:none}
+.panel .desc{color:var(--muted); margin:0; font-size:15px}
+.pfila{display:flex; align-items:center; gap:10px; font:18px var(--f-mono)}
 .pfila .barra{flex:1}
-.pfila .barra i{background:var(--c)}
 .meta-fila{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px}
-.ultimo{font:12px var(--f-mono); color:var(--muted)}
-.estados{display:flex; gap:3px; padding:3px; background:var(--surface2); border:1px solid var(--line); border-radius:10px}
-.estados button{border:0; background:transparent; padding:4px 9px; border-radius:7px; font-size:12px; color:var(--muted)}
-.estados button[aria-pressed="true"]{background:var(--surface); color:var(--fg); box-shadow:inset 0 0 0 1px var(--c)}
-.cuerpo{overflow-y:auto; padding:6px 18px 24px; display:grid; gap:20px; align-content:start}
-.sec h4{font:600 12px var(--f-mono); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:14px 0 8px; display:flex; justify-content:space-between; gap:8px}
+.ultimo{font:17px var(--f-mono); color:var(--muted)}
+.estados{display:flex; gap:3px; padding:3px; background:var(--surface2); border:2px solid var(--line)}
+.estados button{border:2px solid transparent; background:transparent; padding:2px 8px; font:16px/1 var(--f-mono); color:var(--muted); text-transform:uppercase}
+.estados button[aria-pressed="true"]{border-color:var(--c); color:var(--fg)}
+.cuerpo{overflow-y:auto; padding:4px 16px 24px; display:grid; gap:18px; align-content:start}
+.sec h4{font:9px/1.6 var(--f-display); letter-spacing:.06em; text-transform:uppercase; color:var(--nucleo); margin:14px 0 8px; display:flex; justify-content:space-between; gap:8px}
 .tareas{list-style:none; margin:0; padding:0; display:grid; gap:2px}
-.tareas li{display:flex; align-items:flex-start; gap:10px; padding:6px 4px; border-radius:8px}
+.tareas li{display:grid; grid-template-columns:auto 1fr auto; align-items:start; gap:4px 10px; padding:5px 4px}
 .tareas li:hover{background:var(--surface2)}
-.tareas input[type=checkbox]{margin-top:3px; width:17px; height:17px; accent-color:var(--c); flex:none}
-.tareas label{flex:1; min-width:0}
+.tareas input[type=checkbox]{margin-top:4px; width:17px; height:17px; accent-color:var(--c)}
+.tareas label{min-width:0}
 .tareas .hecha label{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--line)}
-.quitar{border:0; background:transparent; color:var(--muted); padding:0 4px; font-size:16px; opacity:.6}
-.quitar:hover{opacity:1; color:var(--danger)}
+.tareas .acciones{display:flex; gap:4px; align-items:flex-start}
+.tareas .espera{grid-column:2 / -1; font:16px/1.2 var(--f-mono); color:var(--nucleo)}
+.tareas .form-espera{grid-column:2 / -1; display:flex; gap:6px}
+.tareas .form-espera input{flex:1; min-width:0}
 .agregar{display:flex; gap:6px; margin-top:6px}
-.agregar input{flex:1; min-width:0; background:var(--surface2); border:1px solid var(--line); border-radius:10px; padding:8px 10px}
-.btn{border:1px solid var(--line); background:var(--surface2); border-radius:10px; padding:8px 12px; font-weight:600; font-size:13px}
-.btn.prim{background:var(--c,var(--prog)); border-color:transparent; color:var(--bg)}
+.agregar input{flex:1; min-width:0}
 .apr{list-style:none; margin:0; padding:0; display:grid; gap:8px}
-.apr li{padding:2px 0 2px 12px; font-size:14px; position:relative}
-.apr li::before{content:""; position:absolute; left:0; top:9px; width:6px; height:6px; border-radius:50%; background:var(--c)}
-.apr .meta{display:block; font:12px var(--f-mono); color:var(--muted); margin-top:2px}
-.vacio{color:var(--muted); font-size:14px; margin:0}
-.priv{border:1px dashed var(--line); border-radius:12px; padding:2px 12px 12px; background:var(--surface2)}
-.priv label{display:block; font-size:13px; color:var(--muted); margin:10px 0 4px}
-.priv textarea{width:100%; min-height:70px; resize:vertical; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:8px 10px}
-.links{list-style:none; padding:0; margin:6px 0 0; display:grid; gap:4px}
-.links a{color:var(--c); word-break:break-word}
-.aviso{font-size:12px; color:var(--muted); min-height:1em}
+.apr li{padding:2px 0 2px 14px; font-size:15px; position:relative}
+.apr li::before{content:""; position:absolute; left:0; top:8px; width:7px; height:7px; background:var(--c)}
+.apr .meta{display:block; font:16px var(--f-mono); color:var(--muted); margin-top:2px}
+.bitacora{list-style:none; margin:0; padding:0; display:grid; gap:6px}
+.bitacora li{display:grid; grid-template-columns:auto 1fr; gap:10px; font-size:15px}
+.bitacora time{font:16px var(--f-mono); color:var(--c); white-space:nowrap}
+.fotos{display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:8px}
+.foto{position:relative; border:2px solid var(--line)}
+.foto img{display:block; width:100%; aspect-ratio:4/3; object-fit:cover; max-width:100%}
+.foto .quitar{position:absolute; top:2px; right:2px; background:var(--bg); font-size:16px; padding:0 5px}
+.subir{display:inline-flex; align-items:center; gap:6px}
+.subir input{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none}
+.priv{border:2px dashed var(--line); padding:2px 12px 12px; background:var(--surface2)}
+.priv label{display:block; font-size:14px; color:var(--muted); margin:10px 0 4px}
+.priv textarea{width:100%; min-height:64px; resize:vertical}
+.links-panel{list-style:none; padding:0; margin:6px 0 0; display:grid; gap:4px}
+.links-panel a{color:var(--c); word-break:break-word; font:17px var(--f-mono)}
+.form-link{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) auto; gap:6px; margin-top:8px}
+.aviso{font:16px var(--f-mono); color:var(--muted); min-height:1em}
 
-.historial{max-width:1280px; margin:28px auto 0}
-.hlista{list-style:none; margin:0; padding:0; display:grid; gap:8px}
-.hlista li{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:start; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:10px 12px}
-.hlista time{font:12px var(--f-mono); color:var(--muted); font-variant-numeric:tabular-nums; padding-top:2px; white-space:nowrap}
+/* historial */
+.historial{max-width:1280px; margin:32px auto 0}
+.hlista{list-style:none; margin:0; padding:0; display:grid; gap:10px}
+.hlista li{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:start; padding:10px 12px}
+.hlista time{font:17px var(--f-mono); color:var(--muted); white-space:nowrap}
 .hlista .txt{min-width:0}
-.hlista .ruta{display:block; font:12px var(--f-mono); color:var(--muted); margin-top:2px}
-.hlista .ruta b{color:var(--c); font-weight:600}
-.borrar{border:1px solid var(--line); background:transparent; border-radius:8px; padding:4px 8px; font-size:12px; color:var(--muted)}
+.hlista .ruta{display:block; font:16px var(--f-mono); color:var(--muted); margin-top:2px}
+.hlista .ruta b{color:var(--c); font-weight:400}
+.borrar{border:2px solid var(--line); background:transparent; padding:2px 8px; font:16px var(--f-mono); color:var(--muted); text-transform:uppercase}
 .borrar.seguro{border-color:var(--danger); color:var(--danger)}
 
+@media (max-width:900px){ .dia{grid-template-columns:1fr 1fr} .dia .caja:first-child{grid-column:1 / -1} }
 @media (max-width:720px){
   canvas{height:90vh; min-height:780px}
   .leyenda{display:none}
   .dia{grid-template-columns:1fr}
-  .foco-grid{grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:80%; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:6px}
+  .foco-grid{grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:82%; overflow-x:auto; scroll-snap-type:x mandatory; padding:0 6px 10px 0}
   .tarjeta{scroll-snap-align:start}
   .avance-grid{grid-template-columns:1fr}
   .cifras{grid-template-columns:repeat(3,minmax(0,1fr))}
   .cifra{padding:10px}
-  .cifra b{font-size:22px}
-  .cifra span{font-size:12px}
-  .panel{left:0; right:0; bottom:0; top:auto; width:auto; max-height:80vh; border-radius:18px 18px 0 0; border-bottom:0; padding-bottom:env(safe-area-inset-bottom,0px)}
-  .panel header{padding-left:max(18px, env(safe-area-inset-left,0px)); padding-right:max(18px, env(safe-area-inset-right,0px))}
+  .cifra b{font-size:15px}
+  .cifra span{font-size:15px}
+  .panel{left:0; right:0; bottom:0; top:auto; width:auto; max-height:82vh; border-bottom:0; box-shadow:0 -6px 0 color-mix(in srgb, var(--c) 55%, transparent); padding-bottom:env(safe-area-inset-bottom,0px)}
+  .panel header{padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px))}
   .hlista li{grid-template-columns:1fr auto}
   .hlista time{grid-column:1/-1; order:-1}
+  .form-link{grid-template-columns:1fr}
 }
-@media (prefers-reduced-motion:reduce){ .barra i{transition:none} body{transition:none} }
+@media (prefers-reduced-motion:reduce){ .barra i{transition:none} body{transition:none} .marca h1{animation:none; transform:skewX(-5deg)} }
 </style>
 
 <header class="top">
@@ -197,21 +242,25 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     <div class="fila"><span id="gtar">— tareas</span><span id="gest">—</span></div>
   </div>
   <div class="modos" role="group" aria-label="Modo visual">
-    <button id="m-neuronal" data-m="neuronal">Neuronal</button>
+    <button id="m-miami" data-m="miami">Miami</button>
     <button id="m-mapa" data-m="mapa">Mapa</button>
     <button id="m-galaxia" data-m="galaxia">Galaxia</button>
   </div>
 </header>
 
 <section class="dia" id="dia" hidden>
-  <div class="caja">
+  <div class="caja px" style="--c:var(--crea)">
     <div class="caja-cab"><h2 class="sec-t">Hoy</h2><small id="hoy-cuenta"></small></div>
     <div id="hoy"></div>
   </div>
-  <div class="caja">
+  <div class="caja px" style="--c:var(--nucleo)">
+    <div class="caja-cab"><h2 class="sec-t">Esperando</h2><small id="espera-cuenta"></small></div>
+    <ul class="lista" id="esperando"></ul>
+  </div>
+  <div class="caja px" style="--c:var(--prog)">
     <div class="caja-cab"><h2 class="sec-t">Ideas</h2><small id="ideas-cuenta"></small></div>
     <form class="ideas-form" id="f-idea"><input id="nueva-idea" placeholder="Anotá una idea…" autocomplete="off" aria-label="Nueva idea"><button class="btn">Guardar</button></form>
-    <ul class="ideas-lista" id="ideas"></ul>
+    <ul class="lista" id="ideas"></ul>
   </div>
 </section>
 
@@ -232,7 +281,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
   <h2 id="avance-t">Avance semanal</h2>
   <p>Cada domingo se guarda una foto del progreso. Una semana cuenta para la racha si se terminó al menos una tarea.</p>
   <div class="avance-grid">
-    <div class="graf" id="graf"><p class="vacio">El primer repaso semanal guarda el punto de partida.</p></div>
+    <div class="graf px" id="graf"><p class="vacio">El primer repaso semanal guarda el punto de partida.</p></div>
     <div class="cifras" id="cifras"></div>
   </div>
 </section>
@@ -255,19 +304,22 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
   };
   const ORDEN_AREAS = ["prog","crea","trab","nucleo"];
   const ESTADOS = { activo:"Activo", pausa:"En pausa", terminado:"Terminado" };
-  const st = { proyectos:[], apr:[], hist:[], priv:{}, sel:null, edita:false, db:null, cargado:false, borrar:null, hoy:null, ideas:[], borrarIdea:null };
   const MAX_HOY = 3;
+  const st = { proyectos:[], apr:[], hist:[], priv:{}, bita:{}, sel:null, edita:false, db:null, assets:null, cargado:false,
+               borrar:null, hoy:null, ideas:[], borrarIdea:null, editEspera:null, borrarFoto:null, subiendo:false };
   const $ = s => document.querySelector(s);
   const cv = $("#lienzo"), ctx = cv.getContext("2d");
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let W=0,H=0,DPR=1, pos={}, estrellas=null, C={};
+  let W=0,H=0,DPR=1, pos={}, estrellas=null, C={}, bgc=null, bgx=null;
 
   /* ---------- modos ---------- */
-  let modo = "neuronal";
-  try { modo = localStorage.getItem("modo") || "neuronal"; } catch(e){}
+  let modo = "miami";
+  try { modo = localStorage.getItem("modo") || "miami"; } catch(e){}
+  if (!["miami","mapa","galaxia"].includes(modo)) modo = "miami";
   function leerColores(){
     const cs = getComputedStyle(document.documentElement);
-    ["--bg","--surface","--fg","--muted","--line","--prog","--crea","--trab","--nucleo","--grid"].forEach(k => C[k] = cs.getPropertyValue(k).trim());
+    ["--bg","--surface","--fg","--muted","--line","--prog","--crea","--trab","--nucleo","--grid","--cielo","--horizonte","--sol1","--sol2","--sol3","--suelo","--palma"]
+      .forEach(k => C[k] = cs.getPropertyValue(k).trim());
   }
   function ponerModo(m){
     modo = m;
@@ -296,15 +348,17 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     return `hace ${Math.floor(d/30)} meses`;
   }
   function vida(p){
-    if (estadoDe(p)==="pausa") return .4;
+    if (estadoDe(p)==="pausa") return .42;
     const d = diasDesde(p.ultimaActividad); if (d==null) return 1;
     return Math.max(.55, 1 - Math.max(0, d-7)/50);
   }
-  const proximoDe = p => ((st.priv[p.id]||{}).proximo||"").trim() || ((p.tareas||[]).find(t=>!t.hecha)||{}).texto || "";
+  const proximoDe = p => ((st.priv[p.id]||{}).proximo||"").trim() || ((p.tareas||[]).find(t=>!t.hecha && !t.espera)||{}).texto || "";
+  const fotoSrc = f => f.src || ("/_blob/" + f.id);
   function hexA(hex, a){
     const h = (hex||"#888").replace("#",""); const n = parseInt(h.length===3 ? h.split("").map(x=>x+x).join("") : h, 16);
     return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;
   }
+  const ahora = () => new Date().toISOString();
 
   /* ---------- geometría ---------- */
   function medir(){
@@ -351,28 +405,69 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     return { x: p.x + Math.sin(t/2100 + p.i*1.7)*3, y: p.y + Math.cos(t/2500 + p.i*2.3)*3 };
   }
 
-  /* ---------- dibujo ---------- */
+  /* ---------- fondo Miami: sol, palmeras y grilla en baja resolución ---------- */
+  function palmera(g, x, base, alto, dir){
+    g.fillStyle = C["--palma"];
+    let tx = x, ty = base;
+    for (let i=0; i<alto; i++){
+      tx = Math.round(x + Math.sin(i/alto*1.3)*dir*alto*0.2); ty = base - i;
+      g.fillRect(tx, ty, i < alto*0.6 ? 3 : 2, 1);
+    }
+    const hojas = [-2.9,-2.4,-1.9,-1.3,-0.7,-0.25];
+    hojas.forEach((a,k) => {
+      const L = alto*(0.42 + (k%2)*0.08);
+      for (let j=0; j<L; j++){
+        const fx = Math.round(tx + Math.cos(a)*j), fy = Math.round(ty + Math.sin(a)*j + (j*j)/(L*1.5));
+        g.fillRect(fx, fy, j < L*0.5 ? 2 : 1, j < L*0.7 ? 2 : 1);
+      }
+    });
+  }
+  function fondoMiami(t){
+    const s = 4, w = Math.max(2, Math.ceil(W/s)), h = Math.max(2, Math.ceil(H/s));
+    if (!bgc){ bgc = document.createElement("canvas"); bgx = bgc.getContext("2d"); }
+    if (bgc.width!==w || bgc.height!==h){ bgc.width = w; bgc.height = h; estrellas = null; }
+    const g = bgx, hz = Math.round(h*0.66);
+    const sky = g.createLinearGradient(0,0,0,hz); sky.addColorStop(0, C["--bg"]); sky.addColorStop(.6, C["--cielo"]); sky.addColorStop(1, C["--horizonte"]);
+    g.fillStyle = sky; g.fillRect(0,0,w,hz);
+    if (!estrellas) estrellas = Array.from({length: Math.round(w*hz/110)}, () => ({ x:Math.floor(Math.random()*w), y:Math.floor(Math.random()*hz*0.75), f:Math.random()*6 }));
+    g.fillStyle = C["--fg"];
+    estrellas.forEach(e => { g.globalAlpha = .35 + .35*Math.sin(t/650 + e.f); g.fillRect(e.x, e.y, 1, 1); });
+    g.globalAlpha = 1;
+    const R = Math.round(Math.min(w, h)*0.24), cx = Math.round(w/2);
+    const sg = g.createLinearGradient(0, hz-R, 0, hz); sg.addColorStop(0, C["--sol1"]); sg.addColorStop(.5, C["--sol2"]); sg.addColorStop(1, C["--sol3"]);
+    g.save(); g.beginPath(); g.arc(cx, hz, R, Math.PI, 0); g.closePath(); g.clip();
+    g.globalAlpha = .8; g.fillStyle = sg; g.fillRect(cx-R, hz-R, 2*R, R); g.globalAlpha = 1;
+    const desliz = reduce ? 0 : (t/1400) % 1;
+    for (let k=0; k<7; k++){
+      const f = (k + desliz)/7, y = Math.round(hz - R*0.62 + f*R*0.62), grosor = Math.max(1, Math.round(f*4));
+      g.fillStyle = C["--horizonte"]; g.fillRect(cx-R, y, 2*R, grosor);
+    }
+    g.restore();
+    palmera(g, Math.round(w*0.07), hz, Math.round(h*0.34), 1);
+    palmera(g, Math.round(w*0.15), hz, Math.round(h*0.22), 1);
+    palmera(g, Math.round(w*0.92), hz, Math.round(h*0.3), -1);
+    g.fillStyle = C["--suelo"]; g.fillRect(0, hz, w, h-hz);
+    g.fillStyle = C["--sol3"]; g.fillRect(0, hz, w, 1);
+    const off = reduce ? 0 : (t/2400) % 1;
+    g.fillStyle = C["--grid"];
+    for (let k=0; k<12; k++){
+      const f = (k+off)/12, y = Math.round(hz + (h-hz)*f*f);
+      g.globalAlpha = .18 + .6*f; g.fillRect(0, y, w, 1);
+    }
+    g.globalAlpha = .4; g.strokeStyle = C["--grid"]; g.lineWidth = 1;
+    for (let k=-14; k<=14; k++){ g.beginPath(); g.moveTo(cx + k*w*0.025, hz); g.lineTo(cx + k*w*0.2, h); g.stroke(); }
+    g.globalAlpha = 1;
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(bgc, 0, 0, w*s, h*s);
+    ctx.imageSmoothingEnabled = true;
+  }
+
   function fondo(t){
     ctx.fillStyle = C["--bg"]; ctx.fillRect(0,0,W,H);
-    if (modo==="neuronal"){
-      const hz = H*0.66, col = C["--grid"];
-      const g = ctx.createLinearGradient(0,hz,0,H); g.addColorStop(0, hexA(col,0)); g.addColorStop(1, hexA(col,.10));
-      ctx.fillStyle = g; ctx.fillRect(0,hz,W,H-hz);
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = hexA(col,.22); ctx.beginPath(); ctx.moveTo(0,hz+.5); ctx.lineTo(W,hz+.5); ctx.stroke();
-      const off = reduce ? 0 : (t/5000) % 1;
-      for (let k=0;k<10;k++){
-        const f = (k+off)/10, y = hz + (H-hz)*f*f;
-        ctx.strokeStyle = hexA(col, .04 + .12*f); ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
-      }
-      const n = 16;
-      for (let k=-n;k<=n;k++){
-        ctx.strokeStyle = hexA(col,.07); ctx.beginPath();
-        ctx.moveTo(W/2 + k*(W/n)*0.1, hz); ctx.lineTo(W/2 + k*(W/n)*1.6, H); ctx.stroke();
-      }
-    } else if (modo==="galaxia"){
+    if (modo==="miami") fondoMiami(t);
+    else if (modo==="galaxia"){
       if(!estrellas){ estrellas = Array.from({length: Math.round(W*H/2600)}, () => ({x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.3+.2, f:Math.random()*6})); }
-      estrellas.forEach(s => { ctx.globalAlpha = .35 + .35*Math.sin(t/900 + s.f); ctx.fillStyle = C["--fg"]; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,7); ctx.fill(); });
+      estrellas.forEach(s => { ctx.globalAlpha = .35 + .35*Math.sin(t/900 + s.f); ctx.fillStyle = C["--fg"]; ctx.fillRect(s.x, s.y, s.r*1.6, s.r*1.6); });
       ctx.globalAlpha = 1;
       ORDEN_AREAS.forEach(a => {
         const any = st.proyectos.find(p => areaDe(p)===a); if(!any || !pos[any.id]) return;
@@ -381,9 +476,8 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
         ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.fill();
       });
     } else {
-      ctx.strokeStyle = hexA(C["--line"], .7); ctx.lineWidth = 1;
-      for(let x=0;x<W;x+=32){ ctx.beginPath(); ctx.moveTo(x+.5,0); ctx.lineTo(x+.5,H); ctx.stroke(); }
-      for(let y=0;y<H;y+=32){ ctx.beginPath(); ctx.moveTo(0,y+.5); ctx.lineTo(W,y+.5); ctx.stroke(); }
+      ctx.fillStyle = hexA(C["--line"], .55);
+      for(let x=16;x<W;x+=32) for(let y=16;y<H;y+=32) ctx.fillRect(x-1, y-1, 2, 2);
     }
   }
   function curva(a,b,k){
@@ -393,6 +487,22 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
   const enCurva = (a,b,c,u) => { const v=1-u; return { x: v*v*a.x + 2*v*u*c.qx + u*u*b.x, y: v*v*a.y + 2*v*u*c.qy + u*u*b.y }; };
   function relacionado(a,b){
     return st.apr.some(x => (x.origen===a && (x.destinos||[]).includes(b)) || (x.origen===b && (x.destinos||[]).includes(a)));
+  }
+  function anillo(q, rr, v, col, est){
+    if (modo==="miami"){
+      const segs = 16, paso = Math.PI*2/segs, llenos = Math.round(v*segs);
+      ctx.lineWidth = 4; ctx.lineCap = "butt";
+      for (let k=0; k<segs; k++){
+        const a0 = -Math.PI/2 + k*paso + paso*0.16, a1 = a0 + paso*0.68;
+        ctx.strokeStyle = k < llenos ? col : hexA(C["--line"], est==="pausa" ? .7 : 1);
+        ctx.beginPath(); ctx.arc(q.x, q.y, rr+6, a0, a1); ctx.stroke();
+      }
+      return;
+    }
+    ctx.lineCap = "round"; ctx.strokeStyle = hexA(C["--line"], modo==="mapa"?1:.9); ctx.lineWidth = 3.5;
+    if (est==="pausa") ctx.setLineDash([3,5]);
+    ctx.beginPath(); ctx.arc(q.x,q.y,rr+5,0,7); ctx.stroke(); ctx.setLineDash([]);
+    if (v>0){ ctx.strokeStyle = col; ctx.beginPath(); ctx.arc(q.x,q.y,rr+5,-Math.PI/2,-Math.PI/2+Math.PI*2*v); ctx.stroke(); }
   }
 
   function dibujar(t){
@@ -404,8 +514,8 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
       const pn = puntoDe(nuc.id,t);
       st.proyectos.forEach(p => {
         if (p.id===nuc.id) return; const q = puntoDe(p.id,t); if(!q||!pn) return;
-        ctx.strokeStyle = hexA(colorArea(areaDe(p)), (modo==="mapa"?.18:.12) * vida(p)); ctx.lineWidth = 1;
-        ctx.setLineDash(modo==="mapa"?[3,5]:[]); ctx.beginPath(); ctx.moveTo(pn.x,pn.y); ctx.lineTo(q.x,q.y); ctx.stroke(); ctx.setLineDash([]);
+        ctx.strokeStyle = hexA(colorArea(areaDe(p)), (modo==="mapa"?.2:.14) * vida(p)); ctx.lineWidth = 1;
+        ctx.setLineDash(modo==="miami"?[2,4]:modo==="mapa"?[3,5]:[]); ctx.beginPath(); ctx.moveTo(pn.x,pn.y); ctx.lineTo(q.x,q.y); ctx.stroke(); ctx.setLineDash([]);
       });
     }
     st.apr.forEach((a, ai) => {
@@ -415,14 +525,14 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
         const b = puntoDe(d,t); if(!b) return;
         const activo = !sel || sel===a.origen || sel===d;
         const c = curva(o,b, .18 + ((ai+di)%3)*.04);
-        ctx.strokeStyle = hexA(col, activo ? (modo==="mapa"?.55:.42) : .06);
-        ctx.lineWidth = activo && sel ? 2 : 1.3;
+        ctx.strokeStyle = hexA(col, activo ? (modo==="mapa"?.55:.45) : .06);
+        ctx.lineWidth = activo && sel ? 2.5 : 1.5;
         if (modo!=="mapa" && activo){ ctx.shadowColor = col; ctx.shadowBlur = 8; }
         ctx.beginPath(); ctx.moveTo(o.x,o.y); ctx.quadraticCurveTo(c.qx,c.qy,b.x,b.y); ctx.stroke(); ctx.shadowBlur = 0;
         if (activo && !reduce){
           const u = ((t/2600) + ai*.37 + di*.21) % 1, p = enCurva(o,b,c,u);
-          ctx.fillStyle = col; if (modo!=="mapa"){ ctx.shadowColor = col; ctx.shadowBlur = 14; }
-          ctx.beginPath(); ctx.arc(p.x,p.y, modo==="galaxia"?1.8:2.6, 0, 7); ctx.fill(); ctx.shadowBlur = 0;
+          ctx.fillStyle = col; if (modo!=="mapa"){ ctx.shadowColor = col; ctx.shadowBlur = 12; }
+          const sz = modo==="galaxia" ? 3 : 5; ctx.fillRect(Math.round(p.x-sz/2), Math.round(p.y-sz/2), sz, sz); ctx.shadowBlur = 0;
         }
       });
     });
@@ -432,42 +542,40 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
       const atenuado = sel && sel!==p.id && !relacionado(sel,p.id);
       ctx.globalAlpha = (atenuado ? .35 : 1) * vida(p);
       if (modo==="mapa"){
-        ctx.fillStyle = C["--surface"]; ctx.strokeStyle = hexA(col,.35); ctx.lineWidth = 1.5;
+        ctx.fillStyle = C["--surface"]; ctx.strokeStyle = hexA(col,.45); ctx.lineWidth = 2;
         ctx.beginPath(); ctx.arc(q.x,q.y,rr,0,7); ctx.fill(); ctx.stroke();
-        ctx.fillStyle = hexA(col,.18); ctx.beginPath(); ctx.arc(q.x,q.y,rr*.55,0,7); ctx.fill();
+        ctx.fillStyle = hexA(col,.2); ctx.fillRect(q.x-rr*.45, q.y-rr*.45, rr*.9, rr*.9);
       } else if (modo==="galaxia"){
         const g = ctx.createRadialGradient(q.x,q.y,0,q.x,q.y,rr*2.2); g.addColorStop(0, hexA(col,.9)); g.addColorStop(.25, hexA(col,.35)); g.addColorStop(1, hexA(col,0));
         ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x,q.y,rr*2.2,0,7); ctx.fill();
         ctx.strokeStyle = hexA(C["--fg"],.5); ctx.lineWidth = 1; const s = rr*1.1 + (reduce?0:Math.sin(t/700+q.x)*2);
         ctx.beginPath(); ctx.moveTo(q.x-s,q.y); ctx.lineTo(q.x+s,q.y); ctx.moveTo(q.x,q.y-s); ctx.lineTo(q.x,q.y+s); ctx.stroke();
-        ctx.fillStyle = C["--fg"]; ctx.beginPath(); ctx.arc(q.x,q.y,rr*.28,0,7); ctx.fill();
+        ctx.fillStyle = C["--fg"]; ctx.fillRect(q.x-2, q.y-2, 4, 4);
       } else {
-        const brillo = est==="pausa" ? 4 : 18 + (reduce?0:Math.sin(t/600 + q.y)*6);
-        ctx.shadowColor = col; ctx.shadowBlur = brillo;
-        ctx.fillStyle = C["--surface"]; ctx.beginPath(); ctx.arc(q.x,q.y,rr,0,7); ctx.fill(); ctx.shadowBlur = 0;
-        const g = ctx.createRadialGradient(q.x,q.y,0,q.x,q.y,rr); g.addColorStop(0, hexA(col,.55)); g.addColorStop(1, hexA(col,.05));
+        ctx.shadowColor = col; ctx.shadowBlur = est==="pausa" ? 4 : 18 + (reduce?0:Math.sin(t/600 + q.y)*6);
+        ctx.fillStyle = C["--bg"]; ctx.beginPath(); ctx.arc(q.x,q.y,rr,0,7); ctx.fill(); ctx.shadowBlur = 0;
+        const g = ctx.createRadialGradient(q.x,q.y-rr*.3,0,q.x,q.y,rr); g.addColorStop(0, hexA(col,.75)); g.addColorStop(1, hexA(col,.08));
         ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x,q.y,rr,0,7); ctx.fill();
+        ctx.fillStyle = hexA(C["--fg"], .85); ctx.fillRect(Math.round(q.x-rr*.45), Math.round(q.y-rr*.5), 3, 3);
       }
-      ctx.lineCap = "round";
-      ctx.strokeStyle = hexA(C["--line"], modo==="mapa"?1:.9); ctx.lineWidth = 3.5;
-      if (est==="pausa") ctx.setLineDash([3,5]);
-      ctx.beginPath(); ctx.arc(q.x,q.y,rr+5,0,7); ctx.stroke(); ctx.setLineDash([]);
-      if (v>0){ ctx.strokeStyle = col; ctx.beginPath(); ctx.arc(q.x,q.y,rr+5,-Math.PI/2,-Math.PI/2+Math.PI*2*v); ctx.stroke(); }
-      if (sel===p.id){ ctx.strokeStyle = col; ctx.lineWidth = 1.5; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.arc(q.x,q.y,rr+11,0,7); ctx.stroke(); ctx.setLineDash([]); }
-      const fs = W<520 ? 11 : 12.5;
-      ctx.font = `600 ${fs}px Figtree, system-ui, sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "top";
-      const etiqueta = p.corto || p.nombre;
-      ctx.lineWidth = 4; ctx.strokeStyle = C["--bg"]; ctx.strokeText(etiqueta, q.x, q.y+rr+10);
-      ctx.fillStyle = C["--fg"]; ctx.fillText(etiqueta, q.x, q.y+rr+10);
+      anillo(q, rr, v, col, est);
+      if (sel===p.id){ ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.setLineDash([4,4]); ctx.strokeRect(q.x-rr-13, q.y-rr-13, (rr+13)*2, (rr+13)*2); ctx.setLineDash([]); }
+      const fs = W<520 ? 17 : 19;
+      ctx.font = `${fs}px VT323, "Courier New", monospace`; ctx.textAlign = "center"; ctx.textBaseline = "top";
+      const etiqueta = (p.corto || p.nombre), y1 = q.y+rr+11;
+      ctx.lineWidth = 4; ctx.strokeStyle = C["--bg"]; ctx.strokeText(etiqueta, q.x, y1);
+      if (modo==="miami"){ ctx.fillStyle = hexA(C["--crea"], .9); ctx.fillText(etiqueta, q.x+1.5, y1+1.5); }
+      ctx.fillStyle = C["--fg"]; ctx.fillText(etiqueta, q.x, y1);
       const dato = est==="pausa" ? "en pausa" : est==="terminado" ? "terminado" : pct(p)+"%";
-      ctx.font = `600 ${fs-1.5}px "JetBrains Mono", monospace`; ctx.fillStyle = est==="pausa" ? C["--muted"] : col;
-      ctx.strokeText(dato, q.x, q.y+rr+12+fs); ctx.fillText(dato, q.x, q.y+rr+12+fs);
+      ctx.font = `${fs-3}px VT323, "Courier New", monospace`; ctx.fillStyle = est==="pausa" ? C["--muted"] : col;
+      ctx.strokeText(dato, q.x, y1+fs-2); ctx.fillText(dato, q.x, y1+fs-2);
       ctx.globalAlpha = 1;
     });
   }
   let ultimoT = 0, corriendo = false;
   function bucle(t){ ultimoT = t; dibujar(t); if(!reduce) requestAnimationFrame(bucle); else corriendo = false; }
   function redibujar(){ if (reduce || !corriendo) dibujar(ultimoT); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => redibujar());
 
   cv.addEventListener("click", e => {
     const b = cv.getBoundingClientRect(), x = e.clientX-b.left, y = e.clientY-b.top;
@@ -507,7 +615,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     presentes.forEach(a => {
       const lista = st.proyectos.filter(p => areaDe(p)===a).sort((x,y)=>(x.orden||0)-(y.orden||0));
       const div = document.createElement("div"); div.className = "grupo";
-      div.innerHTML = `<h2 class="sec-t">${AREAS[a].nombre}</h2><ul></ul>`;
+      div.innerHTML = `<h2 class="sec-t" style="color:var(${AREAS[a].var})">${AREAS[a].nombre}</h2><ul></ul>`;
       lista.forEach(p => {
         const li = document.createElement("li"); const b = document.createElement("button");
         b.className = "chip" + (estadoDe(p)==="pausa" ? " pausa" : ""); b.id = "chip-" + p.id;
@@ -526,7 +634,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     const ord = [...st.apr].sort((x,y)=> String(y.fecha).localeCompare(String(x.fecha)));
     if (!ord.length){ hl.innerHTML = '<li><span class="vacio">Todavía no hay aprendizajes guardados.</span></li>'; }
     ord.forEach(a => {
-      const li = document.createElement("li");
+      const li = document.createElement("li"); li.className = "px";
       const area = areaDe(st.proyectos.find(p=>p.id===a.origen)||{});
       li.style.setProperty("--c", `var(${AREAS[area].var})`);
       li.innerHTML = `<time datetime="${esc(a.fecha)}">${fecha(a.fecha)}</time>
@@ -543,7 +651,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
 
   function pintarFoco(){
     const cont = $("#foco");
-    if (!st.cargado){ return; }
+    if (!st.cargado) return;
     const lista = st.proyectos
       .filter(p => areaDe(p)!=="nucleo" && estadoDe(p)==="activo")
       .sort((x,y) => String(y.ultimaActividad||"").localeCompare(String(x.ultimaActividad||"")))
@@ -551,14 +659,18 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     if (!lista.length){ cont.innerHTML = '<p class="vacio">No hay proyectos activos. Activá uno desde su panel para verlo acá.</p>'; return; }
     cont.innerHTML = "";
     lista.forEach(p => {
-      const a = areaDe(p), b = document.createElement("button");
-      b.className = "tarjeta"; b.id = "foco-" + p.id; b.style.setProperty("--c", `var(${AREAS[a].var})`);
-      const sig = proximoDe(p);
-      b.innerHTML = `<span class="etq">${AREAS[a].nombre}</span><span class="nom">${esc(p.nombre)}</span>
+      const a = areaDe(p), d = document.createElement("div");
+      d.className = "tarjeta px"; d.style.setProperty("--c", `var(${AREAS[a].var})`);
+      const sig = proximoDe(p), foto = (p.fotos||[])[0], links = ((st.priv[p.id]||{}).links||[]).slice(0,3);
+      d.innerHTML = `${foto ? `<img class="tapa" src="${esc(fotoSrc(foto))}" alt="" loading="lazy">` : ""}
+        <span class="etq">${AREAS[a].nombre}</span>
+        <button class="abrir" id="foco-${esc(p.id)}">${esc(p.nombre)}</button>
         <span class="sig">${sig ? `<span>Próximo: </span>${esc(sig)}` : '<span>Sin tareas pendientes</span>'}</span>
-        <span class="pie"><span class="barra"><i style="width:${pct(p)}%"></i></span><span>${pct(p)}%</span><span>${haceTxt(p.ultimaActividad)}</span></span>`;
-      b.addEventListener("click", () => abrir(p.id));
-      cont.append(b);
+        <span class="pie"><span class="barra"><i style="width:${pct(p)}%"></i></span><span>${pct(p)}%</span><span>${haceTxt(p.ultimaActividad)}</span></span>
+        ${links.length ? `<span class="links">${links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.titulo||"link")}</a>`).join("")}</span>` : ""}`;
+      d.querySelector(".abrir").addEventListener("click", () => abrir(p.id));
+      const img = d.querySelector(".tapa"); if (img) img.addEventListener("error", () => img.remove());
+      cont.append(d);
     });
   }
 
@@ -569,27 +681,29 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
       graf.innerHTML = '<p class="vacio">El primer repaso semanal guarda el punto de partida.</p>';
       cif.innerHTML = ""; return;
     }
-    const Wv=600, Hv=180, ml=36, mr=44, mt=14, mb=28;
+    const Wv=600, Hv=190, ml=40, mr=48, mt=14, mb=30;
     const xs = i => h.length===1 ? (ml+Wv-mr)/2 : ml + i*(Wv-ml-mr)/(h.length-1);
     const ys = v => mt + (1 - Math.min(100,Math.max(0,v))/100)*(Hv-mt-mb);
-    let s = `<svg viewBox="0 0 ${Wv} ${Hv}" role="img" aria-label="Progreso semanal: ${h.map(x=>fechaCorta(x.fecha)+" "+x.pct+"%").join(", ")}">`;
+    let s = `<svg viewBox="0 0 ${Wv} ${Hv}" role="img" shape-rendering="crispEdges" aria-label="Progreso semanal: ${h.map(x=>fechaCorta(x.fecha)+" "+x.pct+"%").join(", ")}">`;
     [0,25,50,75,100].forEach(v => {
-      s += `<line x1="${ml}" x2="${Wv-mr}" y1="${ys(v)}" y2="${ys(v)}" style="stroke:var(--line)" stroke-width="1"/>`;
-      s += `<text x="${ml-8}" y="${ys(v)+4}" text-anchor="end" style="fill:var(--muted);font:11px var(--f-mono)">${v}%</text>`;
+      s += `<line x1="${ml}" x2="${Wv-mr}" y1="${ys(v)}" y2="${ys(v)}" style="stroke:var(--line)" stroke-width="1" stroke-dasharray="4 4"/>`;
+      s += `<text x="${ml-8}" y="${ys(v)+5}" text-anchor="end" style="fill:var(--muted);font:18px var(--f-mono)">${v}%</text>`;
     });
-    const pts = h.map((x,i) => [xs(i), ys(x.pct)]);
+    const pts = h.map((x,i) => [Math.round(xs(i)), Math.round(ys(x.pct))]);
     if (pts.length>1){
-      s += `<path d="M${pts[0][0]},${ys(0)} ${pts.map(p=>"L"+p[0]+","+p[1]).join(" ")} L${pts[pts.length-1][0]},${ys(0)} Z" style="fill:var(--prog)" fill-opacity=".12"/>`;
-      s += `<polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" style="stroke:var(--prog)" stroke-width="2.5" stroke-linejoin="round"/>`;
+      let d = `M${pts[0][0]},${pts[0][1]}`;
+      for (let i=1;i<pts.length;i++) d += ` H${pts[i][0]} V${pts[i][1]}`;
+      s += `<path d="${d} V${ys(0)} H${pts[0][0]} Z" style="fill:var(--prog)" fill-opacity=".14"/>`;
+      s += `<path d="${d}" fill="none" style="stroke:var(--prog)" stroke-width="3"/>`;
     }
     const pasoEt = Math.max(1, Math.ceil(h.length/6));
     h.forEach((x,i) => {
-      const ult = i===h.length-1;
-      s += `<circle cx="${pts[i][0]}" cy="${pts[i][1]}" r="${ult?5:3}" style="fill:${ult?"var(--crea)":"var(--prog)"}"/>`;
-      if (i%pasoEt===0 || ult) s += `<text x="${pts[i][0]}" y="${Hv-8}" text-anchor="middle" style="fill:var(--muted);font:11px var(--f-mono)">${esc(fechaCorta(x.fecha))}</text>`;
+      const ult = i===h.length-1, z = ult ? 10 : 6;
+      s += `<rect x="${pts[i][0]-z/2}" y="${pts[i][1]-z/2}" width="${z}" height="${z}" style="fill:${ult?"var(--crea)":"var(--prog)"}"/>`;
+      if (i%pasoEt===0 || ult) s += `<text x="${pts[i][0]}" y="${Hv-8}" text-anchor="middle" style="fill:var(--muted);font:18px var(--f-mono)">${esc(fechaCorta(x.fecha))}</text>`;
     });
     const u = pts[pts.length-1];
-    s += `<text x="${u[0]+9}" y="${u[1]+4}" style="fill:var(--fg);font:600 12px var(--f-mono)">${h[h.length-1].pct}%</text></svg>`;
+    s += `<text x="${u[0]+12}" y="${u[1]+6}" style="fill:var(--nucleo);font:20px var(--f-mono)">${h[h.length-1].pct}%</text></svg>`;
     graf.innerHTML = s;
 
     let racha = 0;
@@ -600,12 +714,12 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     const ult = h[h.length-1], prev = h[h.length-2];
     const delta = prev ? (ult.hechas||0) - (prev.hechas||0) : 0;
     cif.innerHTML = `
-      <div class="cifra"><b>${racha}</b><span>${racha===1 ? "semana" : "semanas"} seguidas con avances</span></div>
-      <div class="cifra"><b>${delta>0?"+":""}${delta}</b><span>tareas desde el repaso anterior</span></div>
-      <div class="cifra"><b>${st.apr.length}</b><span>aprendizajes compartidos</span></div>`;
+      <div class="cifra px" style="--c:var(--crea)"><b>${racha}</b><span>${racha===1 ? "semana" : "semanas"} seguidas con avances</span></div>
+      <div class="cifra px" style="--c:var(--prog)"><b>${delta>0?"+":""}${delta}</b><span>tareas desde el repaso anterior</span></div>
+      <div class="cifra px" style="--c:var(--trab)"><b>${st.apr.length}</b><span>aprendizajes compartidos</span></div>`;
   }
 
-  /* ---------- hoy e ideas ---------- */
+  /* ---------- hoy, esperando e ideas ---------- */
   const hoyISO = () => { const d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,10); };
   const itemsHoy = () => (st.hoy && st.hoy.fecha===hoyISO()) ? (st.hoy.items||[]) : [];
   function tareaDe(it){
@@ -633,24 +747,47 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
       cont.innerHTML = txt;
       const r = $("#retomar"); if (r) r.addEventListener("click", retomarHoy);
     } else {
-      cont.innerHTML = `<ul class="hoy-lista">${vivos.map(({r},k) => `<li class="${r.t.hecha?"hecha":""}" style="--c:var(${AREAS[areaDe(r.p)].var})"><input type="checkbox" id="hoy-${k}" ${r.t.hecha?"checked":""} data-k="${k}"><label for="hoy-${k}">${esc(r.t.texto)}<span class="proy">${esc(r.p.nombre)}</span></label><button class="quitar" data-s="${k}" aria-label="Sacar de hoy">×</button></li>`).join("")}</ul>`;
+      cont.innerHTML = `<ul class="lista">${vivos.map(({r},k) => `<li class="${r.t.hecha?"hecha":""}" style="--c:var(${AREAS[areaDe(r.p)].var})"><input type="checkbox" id="hoy-${k}" ${r.t.hecha?"checked":""} data-k="${k}"><label for="hoy-${k}">${esc(r.t.texto)}<span class="proy">${esc(r.p.nombre)}</span></label><button class="quitar" data-s="${k}" aria-label="Sacar de hoy">×</button></li>`).join("")}</ul>`;
       cont.querySelectorAll("input").forEach(c => c.addEventListener("change", () => { const x = vivos[+c.dataset.k]; cambiarTarea(x.r.p.id, x.r.i, c.checked); }));
       cont.querySelectorAll(".quitar").forEach(b => b.addEventListener("click", () => { const x = vivos[+b.dataset.s]; alternarHoy(x.it.p, x.it.t); }));
     }
+    const esp = [];
+    st.proyectos.forEach(p => (p.tareas||[]).forEach(t => { if (t.espera && !t.hecha) esp.push({ p, t }); }));
+    esp.sort((a,b) => String(a.t.esperaDesde||"").localeCompare(String(b.t.esperaDesde||"")));
+    $("#espera-cuenta").textContent = esp.length ? String(esp.length) : "";
+    const ue = $("#esperando");
+    ue.innerHTML = esp.length
+      ? esp.map(({p,t}) => `<li style="--c:var(${AREAS[areaDe(p)].var})"><button class="txt" data-p="${esc(p.id)}">${esc(t.texto)}<span class="proy">${esc(p.nombre)} · a ${esc(t.espera)}</span></button><time>${t.esperaDesde ? esc(haceTxt(t.esperaDesde)) : ""}</time></li>`).join("")
+      : '<li class="vacio">Nada trabado. Marcá “espera” en una tarea que dependa de otro.</li>';
+    ue.querySelectorAll("button.txt").forEach(b => b.addEventListener("click", () => abrir(b.dataset.p)));
     const nuevas = st.ideas.filter(i => (i.estado||"nueva")==="nueva").sort((a,b) => String(b.fecha).localeCompare(String(a.fecha)));
     $("#ideas-cuenta").textContent = nuevas.length ? `${nuevas.length} sin revisar` : "";
     const ul = $("#ideas");
     ul.innerHTML = nuevas.length
-      ? nuevas.map(i => `<li><span>${esc(i.texto)}</span><time datetime="${esc(i.fecha)}">${esc(fechaCorta(i.fecha))}</time><button class="quitar" data-id="${esc(i.id)}" aria-label="Descartar idea">${st.borrarIdea===i.id ? "¿Descartar?" : "×"}</button></li>`).join("")
+      ? nuevas.map(i => `<li><span class="txt">${esc(i.texto)}</span><time datetime="${esc(i.fecha)}">${esc(fechaCorta(i.fecha))}</time><button class="quitar" data-id="${esc(i.id)}" aria-label="Descartar idea">${st.borrarIdea===i.id ? "¿Descartar?" : "×"}</button></li>`).join("")
       : '<li class="vacio">Sin ideas pendientes. Las que anotes se revisan en el repaso del domingo.</li>';
     ul.querySelectorAll(".quitar").forEach(b => b.addEventListener("click", () => descartarIdea(b.dataset.id)));
   }
 
   /* ---------- panel ---------- */
   const panel = $("#panel");
-  function abrir(id){ st.sel = id; pintarPanel(); pintarListas(); redibujar(); }
+  function abrir(id){ st.sel = id; st.editEspera = null; pintarPanel(); pintarListas(); redibujar(); }
   function cerrar(){ st.sel = null; panel.hidden = true; pintarListas(); redibujar(); }
   addEventListener("keydown", e => { if (e.key==="Escape" && st.sel) cerrar(); });
+
+  function liTarea(p, t, i){
+    const editando = st.editEspera && st.editEspera.p===p.id && st.editEspera.i===i;
+    let acc = "";
+    if (st.edita && !t.hecha){
+      if (!t.espera) acc += `<button class="mini-btn para-hoy" data-h="${i}" aria-pressed="${enHoy(p.id,t.texto)}" aria-label="Elegir para hoy">hoy</button>`;
+      acc += `<button class="mini-btn btn-espera" data-e="${i}" aria-pressed="${!!t.espera}" aria-label="${t.espera ? "Ya no espera" : "Marcar que espera a alguien"}">${t.espera ? "llegó" : "espera"}</button>`;
+    }
+    if (st.edita) acc += `<button class="quitar" data-q="${i}" aria-label="Quitar tarea">×</button>`;
+    return `<li class="${t.hecha?"hecha":""}"><input type="checkbox" id="t-${p.id}-${i}" ${t.hecha?"checked":""} ${st.edita?"":"disabled"} data-i="${i}">
+      <label for="t-${p.id}-${i}">${esc(t.texto)}</label><span class="acciones">${acc}</span>
+      ${t.espera && !t.hecha ? `<span class="espera">Esperando a ${esc(t.espera)}${t.esperaDesde ? " · " + esc(haceTxt(t.esperaDesde)) : ""}</span>` : ""}
+      ${editando ? `<form class="form-espera" id="f-espera"><input id="espera-quien" placeholder="¿A quién o qué esperás?" autocomplete="off" aria-label="A quién esperás"><button class="btn">OK</button></form>` : ""}</li>`;
+  }
 
   function pintarPanel(){
     const p = st.proyectos.find(x=>x.id===st.sel); if(!p){ panel.hidden = true; return; }
@@ -659,13 +796,15 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     const recibe = st.apr.filter(a => (a.destinos||[]).includes(p.id));
     const aporta = st.apr.filter(a => a.origen===p.id);
     const pv = st.priv[p.id] || {};
+    const bit = ((st.bita[p.id]||{}).entradas||[]).slice().sort((a,b)=>String(b.fecha).localeCompare(String(a.fecha))).slice(0,8);
+    const fotos = p.fotos || [];
     const foco = document.activeElement && document.activeElement.id;
     const control = st.edita
       ? `<div class="estados" role="group" aria-label="Estado del proyecto">${Object.keys(ESTADOS).map(k=>`<button id="e-${k}" data-e="${k}" aria-pressed="${est===k}">${ESTADOS[k]}</button>`).join("")}</div>`
       : `<span class="ultimo">${ESTADOS[est]}</span>`;
     panel.innerHTML = `
       <header>
-        <div class="cab"><div style="flex:1;min-width:0;display:grid;gap:6px"><span class="etq">${area.nombre}${p.publico===false ? " · solo en tu versión" : ""}</span><h3 id="p-nombre">${esc(p.nombre)}</h3></div>
+        <div class="cab"><div style="flex:1;min-width:0;display:grid;gap:8px"><span class="etq">${area.nombre}${p.publico===false ? " · solo en tu versión" : ""}</span><h3 id="p-nombre">${esc(p.nombre)}</h3></div>
           <button class="cerrar" id="p-cerrar" aria-label="Cerrar">×</button></div>
         ${p.descripcion ? `<p class="desc">${esc(p.descripcion)}</p>` : ""}
         <div class="pfila"><div class="barra"><i style="width:${pct(p)}%"></i></div><span>${pct(p)}%</span></div>
@@ -673,11 +812,15 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
       </header>
       <div class="cuerpo">
         <div class="sec"><h4><span>Tareas</span><span>${(p.tareas||[]).filter(x=>x.hecha).length}/${(p.tareas||[]).length}</span></h4>
-          <ul class="tareas">${(p.tareas||[]).map((t,i)=>`
-            <li class="${t.hecha?"hecha":""}"><input type="checkbox" id="t-${p.id}-${i}" ${t.hecha?"checked":""} ${st.edita?"":"disabled"} data-i="${i}">
-            <label for="t-${p.id}-${i}">${esc(t.texto)}</label>${st.edita && !t.hecha ? `<button class="para-hoy" data-h="${i}" aria-pressed="${enHoy(p.id,t.texto)}" aria-label="Elegir para hoy">hoy</button>` : ""}${st.edita?`<button class="quitar" data-q="${i}" aria-label="Quitar tarea">×</button>`:""}</li>`).join("") || '<li class="vacio">Sin tareas todavía.</li>'}</ul>
+          <ul class="tareas">${(p.tareas||[]).map((t,i) => liTarea(p,t,i)).join("") || '<li class="vacio">Sin tareas todavía.</li>'}</ul>
           ${st.edita ? `<form class="agregar" id="f-tarea"><input id="nueva-tarea" placeholder="Nueva tarea" autocomplete="off" aria-label="Nueva tarea"><button class="btn">Agregar</button></form>` : ""}
         </div>
+        ${(fotos.length || (st.edita && st.assets)) ? `<div class="sec"><h4><span>Fotos</span><span>${fotos.length}</span></h4>
+          ${fotos.length ? `<div class="fotos">${fotos.map(f => `<div class="foto"><img src="${esc(fotoSrc(f))}" alt="Foto de ${esc(p.nombre)}" loading="lazy">${st.edita && st.assets ? `<button class="quitar" data-f="${esc(f.id)}" aria-label="Quitar foto">${st.borrarFoto===f.id ? "¿Quitar?" : "×"}</button>` : ""}</div>`).join("")}</div>` : ""}
+          ${st.edita && st.assets ? `<label class="btn subir" style="margin-top:8px"><input type="file" id="subir-foto" accept="image/*">${st.subiendo ? "Subiendo…" : "Subir foto"}</label><span class="aviso" id="foto-aviso"></span>` : ""}</div>` : ""}
+        ${st.edita ? `<div class="sec"><h4><span>Bitácora</span><span>solo vos</span></h4>
+          ${bit.length ? `<ul class="bitacora">${bit.map(e => `<li><time>${esc(fechaCorta(e.fecha))}</time><span>${esc(e.texto)}</span></li>`).join("")}</ul>` : '<p class="vacio">Todavía no hay entradas.</p>'}
+          <form class="agregar" id="f-bita"><input id="nueva-bita" placeholder="¿Qué hiciste hoy?" autocomplete="off" aria-label="Nueva entrada de bitácora"><button class="btn">Anotar</button></form></div>` : ""}
         <div class="sec"><h4>Aprendió de otros</h4>
           ${recibe.length ? `<ul class="apr">${recibe.map(a=>liApr(a, "desde")).join("")}</ul>` : '<p class="vacio">Todavía no recibió aprendizajes.</p>'}</div>
         <div class="sec"><h4>Le enseñó a otros</h4>
@@ -685,16 +828,26 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
         ${st.edita ? `<div class="sec priv"><h4><span>Solo para vos</span><span>privado</span></h4>
           <label for="p-proximo">Próximo paso</label><textarea id="p-proximo">${esc(pv.proximo||"")}</textarea>
           <label for="p-notas">Notas</label><textarea id="p-notas">${esc(pv.notas||"")}</textarea>
-          ${(pv.links||[]).length ? `<label>Links</label><ul class="links">${pv.links.map(l=>`<li><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.titulo||l.url)}</a></li>`).join("")}</ul>` : ""}
-          <div style="display:flex;gap:10px;align-items:center;margin-top:10px"><button class="btn prim" id="p-guardar">Guardar notas</button><span class="aviso" id="p-aviso"></span></div></div>` : ""}
+          <label>Links</label>
+          ${(pv.links||[]).length ? `<ul class="links-panel">${pv.links.map((l,k)=>`<li><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.titulo||l.url)}</a> <button class="quitar" data-l="${k}" aria-label="Quitar link">×</button></li>`).join("")}</ul>` : '<p class="vacio">Sin links todavía.</p>'}
+          <div class="form-link"><input id="link-titulo" placeholder="Nombre (Repo, APK…)" autocomplete="off" aria-label="Nombre del link"><input id="link-url" placeholder="https://…" autocomplete="off" aria-label="Dirección del link"><button class="btn" id="link-agregar" type="button">Sumar</button></div>
+          <div style="display:flex;gap:10px;align-items:center;margin-top:12px"><button class="btn prim" id="p-guardar">Guardar notas</button><span class="aviso" id="p-aviso"></span></div></div>` : ""}
       </div>`;
     panel.hidden = false;
     $("#p-cerrar").addEventListener("click", cerrar);
     panel.querySelectorAll(".estados button").forEach(b => b.addEventListener("click", () => cambiarEstado(p.id, b.dataset.e)));
-    panel.querySelectorAll(".tareas input").forEach(c => c.addEventListener("change", () => cambiarTarea(p.id, +c.dataset.i, c.checked)));
-    panel.querySelectorAll(".quitar").forEach(b => b.addEventListener("click", () => quitarTarea(p.id, +b.dataset.q)));
+    panel.querySelectorAll(".tareas input[type=checkbox]").forEach(c => c.addEventListener("change", () => cambiarTarea(p.id, +c.dataset.i, c.checked)));
+    panel.querySelectorAll(".tareas .quitar").forEach(b => b.addEventListener("click", () => quitarTarea(p.id, +b.dataset.q)));
     panel.querySelectorAll(".para-hoy").forEach(b => b.addEventListener("click", () => alternarHoy(p.id, p.tareas[+b.dataset.h].texto)));
+    panel.querySelectorAll(".btn-espera").forEach(b => b.addEventListener("click", () => tocarEspera(p.id, +b.dataset.e)));
+    const fe = $("#f-espera"); if (fe){ $("#espera-quien").focus(); fe.addEventListener("submit", e => { e.preventDefault(); const v = $("#espera-quien").value.trim(); if (v) ponerEspera(p.id, st.editEspera.i, v); }); }
     const f = $("#f-tarea"); if (f) f.addEventListener("submit", e => { e.preventDefault(); const v = $("#nueva-tarea").value.trim(); if (v) agregarTarea(p.id, v); });
+    const fb = $("#f-bita"); if (fb) fb.addEventListener("submit", e => { e.preventDefault(); const v = $("#nueva-bita").value.trim(); if (v) anotarBitacora(p.id, v); });
+    const sf = $("#subir-foto"); if (sf) sf.addEventListener("change", () => { if (sf.files[0]) subirFoto(p.id, sf.files[0]); });
+    panel.querySelectorAll(".foto .quitar").forEach(b => b.addEventListener("click", () => quitarFoto(p.id, b.dataset.f)));
+    panel.querySelectorAll(".foto img").forEach(img => img.addEventListener("error", () => { img.alt = "Foto no disponible"; img.style.opacity = ".3"; }));
+    panel.querySelectorAll(".links-panel .quitar").forEach(b => b.addEventListener("click", () => quitarLink(p.id, +b.dataset.l)));
+    const la = $("#link-agregar"); if (la) la.addEventListener("click", () => sumarLink(p.id));
     const g = $("#p-guardar"); if (g) g.addEventListener("click", () => guardarPriv(p.id));
     if (foco && document.getElementById(foco)) document.getElementById(foco).focus();
   }
@@ -712,12 +865,24 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     Object.assign(p, cambios); pintarPanel(); pintarListas(); redibujar();
     enCola(() => st.db.doc("proyectos/"+id).update(cambios));
   }
-  function actividad(p){ const c = { ultimaActividad: new Date().toISOString() }; if (estadoDe(p)==="pausa") c.estado = "activo"; return c; }
+  function actividad(p){ const c = { ultimaActividad: ahora() }; if (estadoDe(p)==="pausa") c.estado = "activo"; return c; }
   const copiaTareas = p => (p.tareas||[]).map(x=>({...x}));
-  function cambiarTarea(id,i,v){ const p = st.proyectos.find(x=>x.id===id); const t = copiaTareas(p); t[i].hecha = v; guardarProyecto(id, { tareas:t, ...actividad(p) }); }
+  function cambiarTarea(id,i,v){ const p = st.proyectos.find(x=>x.id===id); const t = copiaTareas(p); t[i].hecha = v; if (v){ delete t[i].espera; delete t[i].esperaDesde; } guardarProyecto(id, { tareas:t, ...actividad(p) }); }
   function quitarTarea(id,i){ const p = st.proyectos.find(x=>x.id===id); guardarProyecto(id, { tareas: copiaTareas(p).filter((_,j)=>j!==i), ...actividad(p) }); }
   function agregarTarea(id,texto){ const p = st.proyectos.find(x=>x.id===id); guardarProyecto(id, { tareas: [...copiaTareas(p), {texto, hecha:false}], ...actividad(p) }); }
   function cambiarEstado(id, e){ if (!ESTADOS[e]) return; guardarProyecto(id, { estado:e }); }
+  function tocarEspera(id, i){
+    const p = st.proyectos.find(x=>x.id===id); const t = p.tareas[i];
+    if (t.espera){ const ts = copiaTareas(p); delete ts[i].espera; delete ts[i].esperaDesde; st.editEspera = null; guardarProyecto(id, { tareas: ts }); return; }
+    st.editEspera = (st.editEspera && st.editEspera.p===id && st.editEspera.i===i) ? null : { p:id, i }; pintarPanel();
+  }
+  function ponerEspera(id, i, quien){
+    const p = st.proyectos.find(x=>x.id===id); const ts = copiaTareas(p);
+    ts[i].espera = quien; ts[i].esperaDesde = ahora(); st.editEspera = null;
+    const items = itemsHoy().filter(it => !(it.p===id && it.t===ts[i].texto));
+    if (items.length !== itemsHoy().length) guardarHoy(items);
+    guardarProyecto(id, { tareas: ts });
+  }
   function guardarPriv(id){
     const av = $("#p-aviso"); const pv = st.priv[id] || {};
     const datos = { ...pv, proximo: $("#p-proximo").value, notas: $("#p-notas").value };
@@ -725,12 +890,63 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
     enCola(() => st.db.doc("data/privado/notas/"+id).set(datos).then(() => { st.priv[id] = datos; av.textContent = "Guardado"; pintarFoco(); })
       .catch(() => { av.textContent = "No se pudo guardar. Probá de nuevo en un momento."; }));
   }
+  function guardarLinks(id, links){
+    const pv = { ...(st.priv[id]||{}), links }; st.priv[id] = pv; pintarPanel(); pintarFoco();
+    enCola(() => st.db.doc("data/privado/notas/"+id).set(pv));
+  }
+  function sumarLink(id){
+    let url = $("#link-url").value.trim(), titulo = $("#link-titulo").value.trim();
+    if (!url) return;
+    if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+    guardarLinks(id, [...((st.priv[id]||{}).links||[]), { titulo: titulo || url.replace(/^https?:\/\//,"").split("/")[0], url }]);
+  }
+  function quitarLink(id, k){ guardarLinks(id, ((st.priv[id]||{}).links||[]).filter((_,j)=>j!==k)); }
+  function anotarBitacora(id, texto){
+    const p = st.proyectos.find(x=>x.id===id);
+    const doc = { entradas: [...((st.bita[id]||{}).entradas||[]), { fecha: ahora(), texto }] };
+    st.bita[id] = doc;
+    enCola(() => st.db.doc("data/privado/bitacora/"+id).set(doc));
+    guardarProyecto(id, actividad(p));
+  }
+  async function achicar(file){
+    const max = 1600;
+    try {
+      const bmp = await createImageBitmap(file);
+      const k = Math.min(1, max/Math.max(bmp.width, bmp.height));
+      const c = document.createElement("canvas"); c.width = Math.round(bmp.width*k); c.height = Math.round(bmp.height*k);
+      c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+      return await new Promise(r => c.toBlob(b => r(b), "image/jpeg", 0.85));
+    } catch(e){ return null; }
+  }
+  async function subirFoto(id, file){
+    if (!st.assets || st.subiendo) return;
+    st.subiendo = true; pintarPanel();
+    const av = () => $("#foto-aviso");
+    try {
+      const blob = await achicar(file);
+      if (!blob) throw { code:"invalid_request" };
+      const res = await st.assets.upload(blob, { type:"image/jpeg" });
+      const p = st.proyectos.find(x=>x.id===id);
+      st.subiendo = false;
+      guardarProyecto(id, { fotos: [...(p.fotos||[]), { id: res.id, ext:"jpg" }], ...actividad(p) });
+    } catch(e){
+      st.subiendo = false; pintarPanel();
+      const msg = { too_large:"La foto es muy pesada.", unsupported_type:"Ese archivo no es una imagen que se pueda subir.", quota_or_state:"No queda espacio para más fotos.", rate_limited:"Subiste muchas seguidas; esperá un momento." }[e && e.code] || "No se pudo subir la foto. Probá de nuevo.";
+      if (av()) av().textContent = msg;
+    }
+  }
+  function quitarFoto(id, fid){
+    if (st.borrarFoto !== fid){ st.borrarFoto = fid; pintarPanel(); setTimeout(() => { if (st.borrarFoto===fid){ st.borrarFoto = null; pintarPanel(); } }, 4000); return; }
+    st.borrarFoto = null;
+    const p = st.proyectos.find(x=>x.id===id);
+    guardarProyecto(id, { fotos: (p.fotos||[]).filter(f => f.id!==fid) });
+    if (st.assets) st.assets.delete(fid).catch(() => {});
+  }
   function borrarApr(id){
     if (st.borrar !== id){ st.borrar = id; pintarListas(); setTimeout(()=>{ if(st.borrar===id){ st.borrar=null; pintarListas(); } }, 4000); return; }
     st.borrar = null; st.apr = st.apr.filter(a=>a.id!==id); pintarListas(); if (st.sel) pintarPanel(); redibujar();
     enCola(() => st.db.doc("aprendizajes/"+id).delete());
   }
-
   function guardarHoy(items){
     if (!st.db) return;
     const d = { fecha: hoyISO(), items };
@@ -754,7 +970,7 @@ canvas{display:block; width:100%; height:min(700px, 74vh); min-height:460px; tou
   }
   function agregarIdea(texto){
     const id = "i" + Date.now().toString(36);
-    const d = { texto, fecha: new Date().toISOString(), estado:"nueva" };
+    const d = { texto, fecha: ahora(), estado:"nueva" };
     st.ideas.push({ id, ...d }); pintarDia();
     enCola(() => st.db.doc("data/privado/ideas/"+id).set(d));
   }

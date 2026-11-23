@@ -6,6 +6,7 @@ Uso:
 
 <carpeta_export> tiene las colecciones exportadas de la base como
 proyectos/*.json, aprendizajes/*.json e historial/*.json (un archivo por documento).
+Las fotos de cada proyecto se publican solo si su archivo ya está en img/<id>.<ext> del repo.
 """
 import datetime, glob, json, os, sys
 
@@ -35,10 +36,23 @@ def cifras(proyectos, aprendizajes):
 
 
 def parte_publica(proyectos, aprendizajes):
+    raiz = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     pub = [dict(p) for p in proyectos if p.get("publico") is not False]
     ids = {p["id"] for p in pub}
     for p in pub:
         p.pop("publico", None)
+        # quién o qué se espera puede tener nombres: no sale en la pública
+        p["tareas"] = [{k: v for k, v in t.items() if k not in ("espera", "esperaDesde")} for t in p.get("tareas", [])]
+        # solo las fotos que ya están copiadas en img/
+        fotos = []
+        for f in p.get("fotos", []):
+            ruta = "img/%s.%s" % (f.get("id"), f.get("ext", "jpg"))
+            if os.path.exists(os.path.join(raiz, ruta)):
+                fotos.append({"id": f.get("id"), "ext": f.get("ext", "jpg"), "src": ruta})
+        if fotos:
+            p["fotos"] = fotos
+        else:
+            p.pop("fotos", None)
     apr = []
     for a in aprendizajes:
         if a.get("origen") not in ids:
